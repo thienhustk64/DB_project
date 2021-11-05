@@ -1,0 +1,19 @@
+Quản lý kho, đặt hàng
+
+Quản lý kho:
+-nhập hàng( mẫu mã ,số lượng, phân loại, giá thành, mô tả, thời gian nhập, bảo hành)
+-trưng bày sản phẩm ( trên trang chủ chính - dựa theo lượt mua, đánh giá, giá cả, mua lại) 
+		( tên, ảnh, phân loại, giá thành, mô tả)
+
+-Tìm kiểm sản phẩm: theo tên, mẫu mã, giá thành, loại
+
+Quản lý tài khoản người dùng: họ tên, địa chỉ, sđt, email, pass, 
+	tổng số tiền đã chi -> chia cấp độ vip.
+	- Đăng nhập, đăng ký
+	- lịch sử mua hàng
+
+Quản lý thông báo: về tình trạng đơn hàng, tình trạng sp trong wl
+
+Đặt hàng:
+- Quan tâm: thêm vào wishlist
+- Đặt hàng: giỏ hàng ( ảnh, tên, sl, tiền, xóa, tổng)
