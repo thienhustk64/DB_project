@@ -129,30 +129,6 @@ CREATE TABLE IF NOT EXISTS public."WareHouse_detail"
     "Quantity" numeric NOT NULL
 );
 
-ALTER TABLE public."WareHouse"
-    ADD FOREIGN KEY ("ID_Product")
-    REFERENCES public."HeadPhone" ("ID")
-    NOT VALID;
-
-
-ALTER TABLE public."WareHouse"
-    ADD FOREIGN KEY ("ID_Product")
-    REFERENCES public."KeyBoard" ("ID")
-    NOT VALID;
-
-
-ALTER TABLE public."WareHouse"
-    ADD FOREIGN KEY ("ID_Product")
-    REFERENCES public."Laptop" ("ID")
-    NOT VALID;
-
-
-ALTER TABLE public."WareHouse"
-    ADD FOREIGN KEY ("ID_Product")
-    REFERENCES public."Mouse" ("ID")
-    NOT VALID;
-
-
 ALTER TABLE public."Import_detail"
     ADD FOREIGN KEY ("ID_CSM")
     REFERENCES public."Import" ("ID_CSM")
@@ -188,4 +164,39 @@ ALTER TABLE public."Order_detail"
     REFERENCES public."WareHouse" ("ID_Product")
     NOT VALID;
 
+
+ALTER TABLE public."Mouse"
+    ADD FOREIGN KEY ("ID")
+    REFERENCES public."WareHouse" ("ID_Product")
+    NOT VALID;
+
+
+ALTER TABLE public."KeyBoard"
+    ADD FOREIGN KEY ("ID")
+    REFERENCES public."WareHouse" ("ID_Product")
+    NOT VALID;
+
+
+ALTER TABLE public."Laptop"
+    ADD FOREIGN KEY ("ID")
+    REFERENCES public."WareHouse" ("ID_Product")
+    NOT VALID;
+
+
+ALTER TABLE public."HeadPhone"
+    ADD FOREIGN KEY ("ID")
+    REFERENCES public."WareHouse" ("ID_Product")
+    NOT VALID;
+
 END;
+
+-- drop table "Import_detail";
+-- drop table "WareHouse_detail";
+-- drop table "Order_detail";
+-- drop table "Import";
+-- drop table "Order";
+-- drop table "WareHouse";
+-- drop table "Mouse";
+-- drop table "HeadPhone";
+-- drop table "KeyBoard";
+-- drop table "Laptop";
