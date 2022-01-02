@@ -1,5 +1,6 @@
 /*1.Tim kiem theo bang(phan loai)*/
-CREATE OR REPLACE FUNCTION find_by_table(_table character varying)
+
+CREATE FUNCTION find_by_table(_table character varying)
 RETURNS TABLE (id_product character varying, name_product character varying, price numeric)
 AS
 $$
@@ -29,4 +30,57 @@ LANGUAGE plpgsql;
 
 DROP FUNCTION find_by_table(character varying);
 SELECT * FROM find_by_table('Mouse');
-/*2.Tim kiem theo bang(phan loai)*/
+
+/*2.Tim kiem theo thong tin co ban*/
+
+ALTER TABLE "Laptop"
+	ADD COLUMN doc_weights tsvector;
+UPDATE "Laptop"
+SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("Brand"), 'A') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("CPU"), 'C') ||
+	setweight(to_tsvector("VGA"), 'C') ||
+	setweight(to_tsvector("RAM"), 'C') ||
+	setweight(to_tsvector("ROM"), 'C') ||
+	setweight(to_tsvector("OS"), 'B') ||
+	setweight(to_tsvector("Color"), 'D');
+CREATE INDEX doc_weights_idx
+	ON "Laptop"
+	USING GIN (doc_weights);
+CREATE FUNCTION lap_tsvector_trigger()
+RETURNS trigger 
+AS
+$$
+BEGIN
+	new.doc :=
+	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."CPU"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."VGA"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."RAM"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."ROM"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."OS"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Color"), ''), 'D');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger();
+	
+CREATE FUNCTION find_by_option_lap(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, CPU character varying, VGA character varying, RAM character varying, ROM character varying, OS character varying, Color character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "CPU", "VGA", "RAM", "ROM", "OS", "Color"
+	FROM "Laptop"
+	WHERE doc_weights @@ plainto_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+DROP FUNCTION find_by_option_lap(character varying);
+SELECT * FROM find_by_option_lap('Intel');
+
