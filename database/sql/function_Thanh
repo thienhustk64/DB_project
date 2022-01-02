@@ -32,7 +32,7 @@ DROP FUNCTION find_by_table(character varying);
 SELECT * FROM find_by_table('Mouse');
 
 /*2.Tim kiem theo thong tin co ban*/
-
+/*laptop*/
 ALTER TABLE "Laptop"
 	ADD COLUMN doc_weights tsvector;
 UPDATE "Laptop"
@@ -83,4 +83,47 @@ $$
 LANGUAGE plpgsql;
 DROP FUNCTION find_by_option_lap(character varying);
 SELECT * FROM find_by_option_lap('Intel');
+/*headphone*/
+ALTER TABLE "HeadPhone"
+	ADD COLUMN doc_weights tsvector;
+UPDATE "HeadPhone"
+SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("Type"), 'B') ||
+	setweight(to_tsvector("Color"), 'C') ||
+	setweight(to_tsvector("Brand"), 'A');
+CREATE INDEX doc_weights_idx_head
+	ON "HeadPhone"
+	USING GIN (doc_weights);
+CREATE FUNCTION head_tsvector_trigger()
+RETURNS trigger 
+AS
+$$
+BEGIN
+	new.doc :=
+	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Type"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Color"), ''), 'C');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger();
+	
+CREATE FUNCTION find_by_option_head(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, type_product character varying, Color character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "Type", "Color"
+	FROM "HeadPhone"
+	WHERE doc_weights @@ plainto_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+DROP FUNCTION find_by_option_head(character varying);
+SELECT * FROM find_by_option_head('White');
 
