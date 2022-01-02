@@ -1,3 +1,5 @@
+
+-- INSERT WAREHOUSE
 create or replace function insert_wh()
 returns trigger
 as $body$
@@ -35,3 +37,59 @@ before insert
 on "KeyBoard"
 for each row
 execute procedure insert_wh();
+
+
+-- INSERT IMPORT (chua run)
+
+create or replace function insert_import_detail()
+returns trigger
+$body$
+declare
+	maso_CSM character varying(20) = new."ID_CSM";
+	maso_Product character varying(20) = new."ID_Product"
+	quantity int = new."Quantity";
+begin
+-- 	import
+	UPDATE public."Import"
+		SET "Quantity" = "Quantity" + quantity;
+		WHERE "ID_CSM" = maso_CSM;
+-- 	warehouse
+	UPDATE public."WareHouse"
+		SET "ID_Product"=?, "Quantity"=?, "Quantity_sell"=?, "Quantity_wait"=?
+		WHERE <condition>;
+-- 	warehouse detail insert
+	INSERT INTO public."WareHouse_detail"(
+		"ID_Product", "ID_CSM", "Quantity")
+		VALUES (?, ?, ?);
+return new;
+end;
+$body$
+language plpgsql;
+
+create trigger check_insert_im_d
+after insert
+on "Import_detail"
+for each row
+execute procedure insert_import_detail();
+
+
+-- IF
+-- do $$
+-- declare
+-- 	v_lap "Laptop"%rowtype;
+-- begin
+
+-- 	select * from "Laptop" 
+-- 	into v_lap
+-- 	where "Laptop"."ID" = 'L1';
+	
+-- 	if not found then
+-- 		select * from "Laptop" where "Laptop"."ID" = 'L1';
+-- 	else
+-- 		UPDATE public."WareHouse"
+-- 		SET "Quantity"=0
+-- 		WHERE "ID_Product" = 'L1';
+-- 	end if;
+-- end $$
+
+-- select * from "WareHouse"  where "ID_Product"  = 'L1';

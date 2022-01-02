@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS public."KeyBoard"
     "Switch" character varying(100),
     "Led" character varying(100),
     "Type" character varying(100),
-    "Weight" double precision NOT NULL,
+    "Size" character varying(100) NOT NULL,
     PRIMARY KEY ("ID")
 );
 
