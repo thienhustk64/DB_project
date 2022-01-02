@@ -1,0 +1,32 @@
+/*1.Tim kiem theo bang(phan loai)*/
+CREATE OR REPLACE FUNCTION find_by_table(_table character varying)
+RETURNS TABLE (id_product character varying, name_product character varying, price numeric)
+AS
+$$
+BEGIN
+	IF (_table = 'Laptop')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "Laptop" a;
+	ELSIF (_table = 'HeadPhone')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "HeadPhone" a;
+	ELSIF (_table = 'KeyBoard')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "KeyBoard" a;
+	ELSIF (_table = 'Mouse')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "Mouse" a;
+	ELSE
+		RAISE NOTICE 'The % could not be found', _table;
+	END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+DROP FUNCTION find_by_table(character varying);
+SELECT * FROM find_by_table('Mouse');
+/*2.Tim kiem theo bang(phan loai)*/
