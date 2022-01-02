@@ -28,8 +28,8 @@ END;
 $$
 LANGUAGE plpgsql;
 
-DROP FUNCTION find_by_table(character varying);
-SELECT * FROM find_by_table('Mouse');
+--DROP FUNCTION find_by_table(character varying);
+SELECT * FROM find_by_table('KeyBoard');
 
 /*2.Tim kiem theo thong tin co ban*/
 /*laptop*/
@@ -38,6 +38,15 @@ ALTER TABLE "Laptop"
 UPDATE "Laptop"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Brand"), 'A') ||
+	setweight(to_tsvector("Screen"), 'B') ||
+	setweight(to_tsvector("Status"), 'B') ||
+	setweight(to_tsvector("Keyboard"), 'C') ||
+	setweight(to_tsvector("Audio"), 'C') ||
+	setweight(to_tsvector("LAN"), 'C') ||
+	setweight(to_tsvector("Wireless"), 'D') ||
+	setweight(to_tsvector("Gate"), 'C') ||
+	setweight(to_tsvector("Size"), 'D') ||
+	setweight(to_tsvector("Security"), 'C') ||
 	setweight(to_tsvector("From"), 'B') ||
 	setweight(to_tsvector("CPU"), 'C') ||
 	setweight(to_tsvector("VGA"), 'C') ||
@@ -45,7 +54,7 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("ROM"), 'C') ||
 	setweight(to_tsvector("OS"), 'B') ||
 	setweight(to_tsvector("Color"), 'D');
-CREATE INDEX doc_weights_idx
+CREATE INDEX doc_weights_idx_lap
 	ON "Laptop"
 	USING GIN (doc_weights);
 CREATE FUNCTION lap_tsvector_trigger()
@@ -56,6 +65,15 @@ BEGIN
 	new.doc :=
 	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."Screen"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Keyboard"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Audio"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."LAN"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Wireless"), ''), 'D') ||
+	setweight(to_tsvector('english', coalesce(new."Gate"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Size"), ''), 'D') ||
+	setweight(to_tsvector('english', coalesce(new."Security"), ''), 'C') ||
 	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
 	setweight(to_tsvector('english', coalesce(new."CPU"), ''), 'C') ||
 	setweight(to_tsvector('english', coalesce(new."VGA"), ''), 'C') ||
@@ -71,26 +89,28 @@ CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger();
 	
 CREATE FUNCTION find_by_option_lap(_option character varying)
-RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, CPU character varying, VGA character varying, RAM character varying, ROM character varying, OS character varying, Color character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, CPU character varying, VGA character varying, RAM character varying, ROM character varying, Screen character varying, Status character varying, Keyboard character varying, Audio character varying, LAN character varying, Wireless character varying, Gate character varying, OS character varying, size_product character varying, Color character varying, security_product character varying)
 AS
 $$
 BEGIN
-	RETURN QUERY SELECT "Name", "Brand", "From", "CPU", "VGA", "RAM", "ROM", "OS", "Color"
+	RETURN QUERY SELECT "Name", "Brand", "From", "CPU", "VGA", "RAM", "ROM", "Screen", "Status", "Keyboard", "Audio", "LAN", "Wireless", "Gate", "OS", "Size", "Color", "Security"
 	FROM "Laptop"
-	WHERE doc_weights @@ plainto_tsquery(_option);
+	WHERE doc_weights @@ to_tsquery(_option);
 END;
 $$
 LANGUAGE plpgsql;
 DROP FUNCTION find_by_option_lap(character varying);
-SELECT * FROM find_by_option_lap('Intel');
+SELECT * FROM find_by_option_lap('15:*');
 /*headphone*/
 ALTER TABLE "HeadPhone"
 	ADD COLUMN doc_weights tsvector;
 UPDATE "HeadPhone"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("Status"), 'C') ||
 	setweight(to_tsvector("Type"), 'B') ||
 	setweight(to_tsvector("Color"), 'C') ||
+	setweight(to_tsvector("Led"), 'C') ||
 	setweight(to_tsvector("Brand"), 'A');
 CREATE INDEX doc_weights_idx_head
 	ON "HeadPhone"
@@ -103,6 +123,8 @@ BEGIN
 	new.doc :=
 	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Led"), ''), 'C') ||
 	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
 	setweight(to_tsvector('english', coalesce(new."Type"), ''), 'B') ||
 	setweight(to_tsvector('english', coalesce(new."Color"), ''), 'C');
@@ -114,16 +136,111 @@ CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger();
 	
 CREATE FUNCTION find_by_option_head(_option character varying)
-RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, type_product character varying, Color character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, status character varying, type_product character varying, Led character varying, Color character varying)
 AS
 $$
 BEGIN
-	RETURN QUERY SELECT "Name", "Brand", "From", "Type", "Color"
+	RETURN QUERY SELECT "Name", "Brand", "From", "Status", "Type", "Led", "Color"
 	FROM "HeadPhone"
-	WHERE doc_weights @@ plainto_tsquery(_option);
+	WHERE doc_weights @@ to_tsquery(_option);
 END;
 $$
 LANGUAGE plpgsql;
 DROP FUNCTION find_by_option_head(character varying);
-SELECT * FROM find_by_option_head('White');
+SELECT * FROM find_by_option_head('Bl:*');
+/*mouse*/
+ALTER TABLE "Mouse"
+	ADD COLUMN doc_weights tsvector;
+UPDATE "Mouse"
+SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("Brand"), 'A') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("Status"), 'C') ||
+	setweight(to_tsvector("Color"), 'C') ||
+	setweight(to_tsvector("Size"), 'C') ||
+	setweight(to_tsvector("Led"), 'C');
+CREATE INDEX doc_weights_idx_mouse
+	ON "Mouse"
+	USING GIN (doc_weights);
+CREATE FUNCTION mouse_tsvector_trigger()
+RETURNS trigger 
+AS
+$$
+BEGIN
+	new.doc :=
+	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Color"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Size"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Led"), ''), 'C');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger();
+	
+CREATE FUNCTION find_by_option_mouse(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, Status character varying, Color character varying, size_product character varying, Led character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "Status", "Color", "Size", "Led"
+	FROM "Mouse"
+	WHERE doc_weights @@ to_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+DROP FUNCTION find_by_option_mouse(character varying);
+SELECT * FROM find_by_option_mouse('B:*');
+/*keyboard*/
+ALTER TABLE "KeyBoard"
+	ADD COLUMN doc_weights tsvector;
+UPDATE "KeyBoard"
+SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("Brand"), 'A') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("Status"), 'C') ||
+	setweight(to_tsvector("Switch"), 'B') ||
+	setweight(to_tsvector("Led"), 'C') ||
+	setweight(to_tsvector("Type"), 'C');
+CREATE INDEX doc_weights_idx_key
+	ON "KeyBoard"
+	USING GIN (doc_weights);
+CREATE FUNCTION key_tsvector_trigger()
+RETURNS trigger 
+AS
+$$
+BEGIN
+	new.doc :=
+	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Switch"), ''), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Led"), ''), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Type"), ''), 'C');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "KeyBoard" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger();
+	
+CREATE FUNCTION find_by_option_key(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, Status character varying, Switch character varying, Led character varying, type_product character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "Status", "Switch", "Led", "Type"
+	FROM "KeyBoard"
+	WHERE doc_weights @@ to_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+DROP FUNCTION find_by_option_key(character varying);
+SELECT * FROM find_by_option_key('Leo:*');
+
 
