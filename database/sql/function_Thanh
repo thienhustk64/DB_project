@@ -223,7 +223,7 @@ AS
 $$
 BEGIN
 	new.doc :=
-	setweight(to_tsvecto('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
 	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
 	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
@@ -298,8 +298,14 @@ CREATE OR REPLACE TRIGGER check_status_wh
 AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
 
 UPDATE public."WareHouse" SET
-"Quantity" = '3'::numeric WHERE
-"ID_Product" = 'M2';
+"Quantity" = '0'::numeric WHERE
+"ID_Product" = 'M4';
+UPDATE public."WareHouse" SET
+"Quantity" = '0'::numeric WHERE
+"ID_Product" = 'M5';
+UPDATE public."WareHouse" SET
+"Quantity" = '0'::numeric WHERE
+"ID_Product" = 'M6';
 	
 
 
