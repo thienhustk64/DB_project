@@ -155,6 +155,8 @@ SELECT * FROM find_by_option_head('Bl:*');
 /*mouse*/
 ALTER TABLE "Mouse"
 	ADD COLUMN doc_weights tsvector;
+ALTER TABLE "Mouse"
+	ADD COLUMN doc tsvector;
 UPDATE "Mouse"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Brand"), 'A') ||
@@ -166,27 +168,27 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 CREATE INDEX doc_weights_idx_mouse
 	ON "Mouse"
 	USING GIN (doc_weights);
-CREATE FUNCTION mouse_tsvector_trigger()
+CREATE OR REPLACE FUNCTION mouse_tsvector_trigger()
 RETURNS trigger 
 AS
 $$
 BEGIN
 	new.doc :=
-	setweight(to_tsvector('english', coalesce(new."Name"), ''), 'A')||
-	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
-	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Color"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Size"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Led"), ''), 'C');
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Color", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Size", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Led", '')), 'C');
 	RETURN new;
 END
 $$
 LANGUAGE plpgsql;
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger();
 	
-CREATE FUNCTION find_by_option_mouse(_option character varying)
+CREATE OR REPLACE FUNCTION find_by_option_mouse(_option character varying)
 RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, Status character varying, Color character varying, size_product character varying, Led character varying)
 AS
 $$
@@ -202,6 +204,8 @@ SELECT * FROM find_by_option_mouse('B:*');
 /*keyboard*/
 ALTER TABLE "KeyBoard"
 	ADD COLUMN doc_weights tsvector;
+ALTER TABLE "KeyBoard"
+	ADD COLUMN doc tsvector;
 UPDATE "KeyBoard"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Brand"), 'A') ||
@@ -219,13 +223,13 @@ AS
 $$
 BEGIN
 	new.doc :=
-	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
-	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
-	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Switch"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Led"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Type"), ''), 'C');
+	setweight(to_tsvecto('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Switch", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Led", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Type", '')), 'C');
 	RETURN new;
 END
 $$
@@ -294,8 +298,8 @@ CREATE OR REPLACE TRIGGER check_status_wh
 AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
 
 UPDATE public."WareHouse" SET
-"Quantity" = '16'::numeric WHERE
-"ID_Product" = 'L20';
+"Quantity" = '3'::numeric WHERE
+"ID_Product" = 'M2';
 	
 
 
