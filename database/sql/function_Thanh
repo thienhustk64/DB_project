@@ -35,6 +35,8 @@ SELECT * FROM find_by_table('KeyBoard');
 /*laptop*/
 ALTER TABLE "Laptop"
 	ADD COLUMN doc_weights tsvector;
+ALTER TABLE "Laptop"
+	ADD COLUMN doc tsvector;
 UPDATE "Laptop"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Brand"), 'A') ||
@@ -57,38 +59,38 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 CREATE INDEX doc_weights_idx_lap
 	ON "Laptop"
 	USING GIN (doc_weights);
-CREATE FUNCTION lap_tsvector_trigger()
+CREATE OR REPLACE FUNCTION lap_tsvector_trigger()
 RETURNS trigger 
 AS
 $$
 BEGIN
 	new.doc :=
-	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
-	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
-	setweight(to_tsvector('english', coalesce(new."Screen"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Keyboard"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Audio"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."LAN"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Wireless"), ''), 'D') ||
-	setweight(to_tsvector('english', coalesce(new."Gate"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Size"), ''), 'D') ||
-	setweight(to_tsvector('english', coalesce(new."Security"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."CPU"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."VGA"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."RAM"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."ROM"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."OS"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Color"), ''), 'D');
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."Screen", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Keyboard", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Audio", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."LAN", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Wireless", '')), 'D') ||
+	setweight(to_tsvector('english', coalesce(new."Gate", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Size", '')), 'D') ||
+	setweight(to_tsvector('english', coalesce(new."Security", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."CPU", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."VGA", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."RAM", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."ROM", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."OS", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Color", '')), 'D');
 	RETURN new;
 END
 $$
 LANGUAGE plpgsql;
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger();
 	
-CREATE FUNCTION find_by_option_lap(_option character varying)
+CREATE OR REPLACE FUNCTION find_by_option_lap(_option character varying)
 RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, CPU character varying, VGA character varying, RAM character varying, ROM character varying, Screen character varying, Status character varying, Keyboard character varying, Audio character varying, LAN character varying, Wireless character varying, Gate character varying, OS character varying, size_product character varying, Color character varying, security_product character varying)
 AS
 $$
@@ -100,10 +102,12 @@ END;
 $$
 LANGUAGE plpgsql;
 DROP FUNCTION find_by_option_lap(character varying);
-SELECT * FROM find_by_option_lap('15:*');
+SELECT * FROM find_by_option_lap('AM:*');
 /*headphone*/
 ALTER TABLE "HeadPhone"
 	ADD COLUMN doc_weights tsvector;
+ALTER TABLE "HeadPhone"
+	ADD COLUMN doc tsvector;
 UPDATE "HeadPhone"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("From"), 'B') ||
@@ -115,19 +119,19 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 CREATE INDEX doc_weights_idx_head
 	ON "HeadPhone"
 	USING GIN (doc_weights);
-CREATE FUNCTION head_tsvector_trigger()
+CREATE OR REPLACE FUNCTION head_tsvector_trigger()
 RETURNS trigger 
 AS
 $$
 BEGIN
 	new.doc :=
-	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
-	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
-	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."Led"), ''), 'C') ||
-	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Type"), ''), 'B') ||
-	setweight(to_tsvector('english', coalesce(new."Color"), ''), 'C');
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Led", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Type", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Color", '')), 'C');
 	RETURN new;
 END
 $$
@@ -168,7 +172,7 @@ AS
 $$
 BEGIN
 	new.doc :=
-	setweight(to_tsvecto('english', coalesce(new."Name"), ''), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Name"), ''), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand"), ''), 'A') ||
 	setweight(to_tsvector('english', coalesce(new."From"), ''), 'B') ||
 	setweight(to_tsvector('english', coalesce(new."Status"), ''), 'C') ||
@@ -242,5 +246,56 @@ $$
 LANGUAGE plpgsql;
 DROP FUNCTION find_by_option_key(character varying);
 SELECT * FROM find_by_option_key('Leo:*');
+
+/*3.Tim kiem theo tinh trang san pham*/
+SELECT * FROM find_by_option_lap('In<->Stock');
+SELECT * FROM find_by_option_lap('Out<->Stock');
+SELECT * FROM find_by_option_head('In<->Stock');
+SELECT * FROM find_by_option_head('Out<->Stock');
+SELECT * FROM find_by_option_mouse('In<->Stock');
+SELECT * FROM find_by_option_mouse('Out<->Stock');
+SELECT * FROM find_by_option_key('In<->Stock');
+SELECT * FROM find_by_option_key('Out<->Stock');
+
+/*4.Tim kiem theo ngay nhap kho*/
+
+/*5.trigger cap nhat tinh trang san pham*/
+CREATE  OR REPLACE FUNCTION count_product_wh()
+RETURNS TRIGGER
+AS
+$BODY$
+BEGIN
+		IF NEW."Quantity" = 0 
+		THEN
+			UPDATE "HeadPhone"
+			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "KeyBoard"
+			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Mouse"
+			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Laptop"
+			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			RAISE NOTICE 'The product % was out of stock', NEW."ID_Product";
+		ELSE	
+			UPDATE "HeadPhone"
+			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "KeyBoard"
+			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Laptop"
+			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Mouse"
+			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+		END IF;
+	RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER check_status_wh
+AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
+
+UPDATE public."WareHouse" SET
+"Quantity" = '16'::numeric WHERE
+"ID_Product" = 'L20';
+	
 
 
