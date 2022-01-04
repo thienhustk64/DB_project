@@ -1,6 +1,5 @@
 /*1.Tim kiem theo bang(phan loai)*/
-
-CREATE FUNCTION find_by_table(_table character varying)
+CREATE OR REPLACE FUNCTION find_by_table(_table character varying)
 RETURNS TABLE (id_product character varying, name_product character varying, price numeric)
 AS
 $$
@@ -27,18 +26,15 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-
---DROP FUNCTION find_by_table(character varying);
-SELECT * FROM find_by_table('KeyBoard');
-
 /*2.Tim kiem theo thong tin co ban*/
 /*laptop*/
 ALTER TABLE "Laptop"
 	ADD COLUMN doc_weights tsvector;
-ALTER TABLE "Laptop"
-	ADD COLUMN doc tsvector;
+CREATE INDEX doc_weights_idx_lap
+	ON "Laptop"
+	USING GIN (doc_weights);
 UPDATE "Laptop"
-SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+    SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Brand"), 'A') ||
 	setweight(to_tsvector("Screen"), 'B') ||
 	setweight(to_tsvector("Status"), 'B') ||
@@ -56,15 +52,12 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("ROM"), 'C') ||
 	setweight(to_tsvector("OS"), 'B') ||
 	setweight(to_tsvector("Color"), 'D');
-CREATE INDEX doc_weights_idx_lap
-	ON "Laptop"
-	USING GIN (doc_weights);
 CREATE OR REPLACE FUNCTION lap_tsvector_trigger()
-RETURNS trigger 
+RETURNS TRIGGER 
 AS
 $$
 BEGIN
-	new.doc :=
+	new.doc_weights := 
 	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
 	setweight(to_tsvector('english', coalesce(new."Screen", '')), 'B') ||
@@ -101,13 +94,12 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-DROP FUNCTION find_by_option_lap(character varying);
-SELECT * FROM find_by_option_lap('AM:*');
 /*headphone*/
 ALTER TABLE "HeadPhone"
 	ADD COLUMN doc_weights tsvector;
-ALTER TABLE "HeadPhone"
-	ADD COLUMN doc tsvector;
+CREATE INDEX doc_weights_idx_head
+	ON "HeadPhone"
+	USING GIN (doc_weights);
 UPDATE "HeadPhone"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("From"), 'B') ||
@@ -116,15 +108,12 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Color"), 'C') ||
 	setweight(to_tsvector("Led"), 'C') ||
 	setweight(to_tsvector("Brand"), 'A');
-CREATE INDEX doc_weights_idx_head
-	ON "HeadPhone"
-	USING GIN (doc_weights);
 CREATE OR REPLACE FUNCTION head_tsvector_trigger()
 RETURNS trigger 
 AS
 $$
 BEGIN
-	new.doc :=
+	new.doc_weights :=
 	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
 	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
@@ -136,10 +125,10 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger();
 	
-CREATE FUNCTION find_by_option_head(_option character varying)
+CREATE OR REPLACE FUNCTION find_by_option_head(_option character varying)
 RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, status character varying, type_product character varying, Led character varying, Color character varying)
 AS
 $$
@@ -150,13 +139,12 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-DROP FUNCTION find_by_option_head(character varying);
-SELECT * FROM find_by_option_head('Bl:*');
 /*mouse*/
 ALTER TABLE "Mouse"
 	ADD COLUMN doc_weights tsvector;
-ALTER TABLE "Mouse"
-	ADD COLUMN doc tsvector;
+CREATE INDEX doc_weights_idx_mouse
+	ON "Mouse"
+	USING GIN (doc_weights);
 UPDATE "Mouse"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Brand"), 'A') ||
@@ -165,15 +153,12 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Color"), 'C') ||
 	setweight(to_tsvector("Size"), 'C') ||
 	setweight(to_tsvector("Led"), 'C');
-CREATE INDEX doc_weights_idx_mouse
-	ON "Mouse"
-	USING GIN (doc_weights);
 CREATE OR REPLACE FUNCTION mouse_tsvector_trigger()
 RETURNS trigger 
 AS
 $$
 BEGIN
-	new.doc :=
+	new.doc_weights :=
 	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
 	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
@@ -199,13 +184,12 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-DROP FUNCTION find_by_option_mouse(character varying);
-SELECT * FROM find_by_option_mouse('B:*');
 /*keyboard*/
 ALTER TABLE "KeyBoard"
 	ADD COLUMN doc_weights tsvector;
-ALTER TABLE "KeyBoard"
-	ADD COLUMN doc tsvector;
+CREATE INDEX doc_weights_idx_key
+	ON "KeyBoard"
+	USING GIN (doc_weights);
 UPDATE "KeyBoard"
 SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Brand"), 'A') ||
@@ -214,15 +198,12 @@ SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
 	setweight(to_tsvector("Switch"), 'B') ||
 	setweight(to_tsvector("Led"), 'C') ||
 	setweight(to_tsvector("Type"), 'C');
-CREATE INDEX doc_weights_idx_key
-	ON "KeyBoard"
-	USING GIN (doc_weights);
-CREATE FUNCTION key_tsvector_trigger()
-RETURNS trigger 
+CREATE OR REPLACE FUNCTION key_tsvector_trigger()
+RETURNS TRIGGER
 AS
 $$
 BEGIN
-	new.doc :=
+	new.doc_weights :=
 	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
 	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
 	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
@@ -234,10 +215,10 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "KeyBoard" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger();
 	
-CREATE FUNCTION find_by_option_key(_option character varying)
+CREATE OR REPLACE FUNCTION find_by_option_key(_option character varying)
 RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, Status character varying, Switch character varying, Led character varying, type_product character varying)
 AS
 $$
@@ -248,23 +229,10 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-DROP FUNCTION find_by_option_key(character varying);
-SELECT * FROM find_by_option_key('Leo:*');
+/*3Tim kiem theo ngay nhap kho*/
 
-/*3.Tim kiem theo tinh trang san pham*/
-SELECT * FROM find_by_option_lap('In<->Stock');
-SELECT * FROM find_by_option_lap('Out<->Stock');
-SELECT * FROM find_by_option_head('In<->Stock');
-SELECT * FROM find_by_option_head('Out<->Stock');
-SELECT * FROM find_by_option_mouse('In<->Stock');
-SELECT * FROM find_by_option_mouse('Out<->Stock');
-SELECT * FROM find_by_option_key('In<->Stock');
-SELECT * FROM find_by_option_key('Out<->Stock');
-
-/*4.Tim kiem theo ngay nhap kho*/
-
-/*5.trigger cap nhat tinh trang san pham*/
-CREATE  OR REPLACE FUNCTION count_product_wh()
+/*4trigger cap nhat tinh trang san pham*/
+CREATE OR REPLACE FUNCTION count_product_wh()
 RETURNS TRIGGER
 AS
 $BODY$
@@ -297,15 +265,36 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER check_status_wh
 AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
 
-UPDATE public."WareHouse" SET
-"Quantity" = '0'::numeric WHERE
-"ID_Product" = 'M4';
-UPDATE public."WareHouse" SET
-"Quantity" = '0'::numeric WHERE
-"ID_Product" = 'M5';
-UPDATE public."WareHouse" SET
-"Quantity" = '0'::numeric WHERE
-"ID_Product" = 'M6';
-	
+/*5Lenh test*/
+
+--SELECT * FROM find_by_table('KeyBoard');
+
+--SELECT * FROM find_by_option_lap('AM:*');
+
+--SELECT * FROM find_by_option_head('Bl:*');
+
+--SELECT * FROM find_by_option_mouse('B:*');
+
+--SELECT * FROM find_by_option_key('Leo:*');
+
+--SELECT * FROM find_by_option_lap('In<->Stock');
+--SELECT * FROM find_by_option_lap('Out<->Stock');
+--SELECT * FROM find_by_option_head('In<->Stock');
+--SELECT * FROM find_by_option_head('Out<->Stock');
+--SELECT * FROM find_by_option_mouse('In<->Stock');
+--SELECT * FROM find_by_option_mouse('Out<->Stock');
+--SELECT * FROM find_by_option_key('In<->Stock');
+--SELECT * FROM find_by_option_key('Out<->Stock');
+
+--UPDATE public."WareHouse" SET
+--"Quantity" = '0'::numeric WHERE
+--"ID_Product" = 'M4';
+--UPDATE public."WareHouse" SET
+--"Quantity" = '0'::numeric WHERE
+--"ID_Product" = 'M5';
+--UPDATE public."WareHouse" SET
+--"Quantity" = '0'::numeric WHERE
+--"ID_Product" = 'M6';
+
 
 
