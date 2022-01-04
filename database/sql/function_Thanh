@@ -240,23 +240,23 @@ BEGIN
 		IF NEW."Quantity" = 0 
 		THEN
 			UPDATE "HeadPhone"
-			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
 			UPDATE "KeyBoard"
-			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
 			UPDATE "Mouse"
-			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
 			UPDATE "Laptop"
-			SET "Status" = 'Out Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
 			RAISE NOTICE 'The product % was out of stock', NEW."ID_Product";
 		ELSE	
 			UPDATE "HeadPhone"
-			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
 			UPDATE "KeyBoard"
-			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
 			UPDATE "Laptop"
-			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
 			UPDATE "Mouse"
-			SET "Status" = 'In Stock' WHERE "ID" = NEW."ID_Product";
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
 		END IF;
 	RETURN NEW;
 END;
@@ -277,18 +277,18 @@ AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
 
 --SELECT * FROM find_by_option_key('Leo:*');
 
---SELECT * FROM find_by_option_lap('In<->Stock');
---SELECT * FROM find_by_option_lap('Out<->Stock');
+-- SELECT * FROM find_by_option_lap('In<->Stock');
+-- SELECT * FROM find_by_option_lap('OutStock');
 --SELECT * FROM find_by_option_head('In<->Stock');
 --SELECT * FROM find_by_option_head('Out<->Stock');
---SELECT * FROM find_by_option_mouse('In<->Stock');
---SELECT * FROM find_by_option_mouse('Out<->Stock');
+-- SELECT * FROM find_by_option_mouse('InStock');
+-- SELECT * FROM find_by_option_mouse('OutStock');
 --SELECT * FROM find_by_option_key('In<->Stock');
 --SELECT * FROM find_by_option_key('Out<->Stock');
 
---UPDATE public."WareHouse" SET
---"Quantity" = '0'::numeric WHERE
---"ID_Product" = 'M4';
+UPDATE public."WareHouse" SET
+"Quantity" = '1'::numeric WHERE
+"ID_Product" = 'M4';
 --UPDATE public."WareHouse" SET
 --"Quantity" = '0'::numeric WHERE
 --"ID_Product" = 'M5';

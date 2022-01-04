@@ -1,0 +1,5 @@
+delete from "HeadPhone";
+delete from "Laptop";
+delete from "KeyBoard";
+delete from "Mouse";
+delete from "WareHouse";
