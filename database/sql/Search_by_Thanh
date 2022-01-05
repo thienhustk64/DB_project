@@ -26,6 +26,7 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
 /*2.Tim kiem theo thong tin co ban*/
 /*laptop*/
 ALTER TABLE "Laptop"
@@ -229,43 +230,12 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-/*3Tim kiem theo ngay nhap kho*/
 
-/*4trigger cap nhat tinh trang san pham*/
-CREATE OR REPLACE FUNCTION count_product_wh()
-RETURNS TRIGGER
-AS
-$BODY$
-BEGIN
-		IF NEW."Quantity" = 0 
-		THEN
-			UPDATE "HeadPhone"
-			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
-			UPDATE "KeyBoard"
-			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
-			UPDATE "Mouse"
-			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
-			UPDATE "Laptop"
-			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
-			RAISE NOTICE 'The product % was out of stock', NEW."ID_Product";
-		ELSE	
-			UPDATE "HeadPhone"
-			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
-			UPDATE "KeyBoard"
-			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
-			UPDATE "Laptop"
-			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
-			UPDATE "Mouse"
-			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
-		END IF;
-	RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER check_status_wh
-AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
+/*3.Tim kiem theo ngay nhap kho*/
 
-/*5Lenh test*/
+
+
+/*4.Test*/
 
 --SELECT * FROM find_by_table('KeyBoard');
 
@@ -277,24 +247,44 @@ AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
 
 --SELECT * FROM find_by_option_key('Leo:*');
 
--- SELECT * FROM find_by_option_lap('In<->Stock');
--- SELECT * FROM find_by_option_lap('OutStock');
+--SELECT * FROM find_by_option_lap('In<->Stock');
+--SELECT * FROM find_by_option_lap('OutStock');
 --SELECT * FROM find_by_option_head('In<->Stock');
 --SELECT * FROM find_by_option_head('Out<->Stock');
--- SELECT * FROM find_by_option_mouse('InStock');
--- SELECT * FROM find_by_option_mouse('OutStock');
+--SELECT * FROM find_by_option_mouse('InStock');
+--SELECT * FROM find_by_option_mouse('OutStock');
 --SELECT * FROM find_by_option_key('In<->Stock');
 --SELECT * FROM find_by_option_key('Out<->Stock');
 
-UPDATE public."WareHouse" SET
-"Quantity" = '1'::numeric WHERE
-"ID_Product" = 'M4';
---UPDATE public."WareHouse" SET
---"Quantity" = '0'::numeric WHERE
---"ID_Product" = 'M5';
---UPDATE public."WareHouse" SET
---"Quantity" = '0'::numeric WHERE
---"ID_Product" = 'M6';
+/*5.Delete*/
+--DROP FUNCTION IF EXISTS find_by_table(_table character varying);
+
+--ALTER TABLE "Laptop"
+--	DROP COLUMN doc_weights;
+--DROP TRIGGER IF EXISTS tsvectorupdate ON "Laptop";
+--DROP FUNCTION IF EXISTS lap_tsvector_trigger();
+--DROP FUNCTION IF EXISTS find_by_option_lap(_option character varying);
+
+--ALTER TABLE "HeadPhone"
+--	DROP COLUMN doc_weights;
+--DROP TRIGGER IF EXISTS tsvectorupdate ON "HeadPhone";
+--DROP FUNCTION IF EXISTS head_tsvector_trigger();
+--DROP FUNCTION IF EXISTS find_by_option_head(_option character varying);
+
+--ALTER TABLE "Mouse"
+--	DROP COLUMN doc_weights;
+--DROP TRIGGER IF EXISTS tsvectorupdate ON "Mouse";
+--DROP FUNCTION IF EXISTS mouse_tsvector_trigger();
+--DROP FUNCTION IF EXISTS find_by_option_mouse(_option character varying);
+
+--ALTER TABLE "KeyBoard"
+--	DROP COLUMN doc_weights;
+--DROP TRIGGER IF EXISTS tsvectorupdate ON "KeyBoard";
+--DROP FUNCTION IF EXISTS key_tsvector_trigger();
+--DROP FUNCTION IF EXISTS find_by_option_key(_option character varying);
+
+
+
 
 
 
