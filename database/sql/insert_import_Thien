@@ -2,11 +2,12 @@
 
 create or replace function insert_import_detail()
 returns trigger
+as
 $body$
 declare
 	maso_CSM character varying(20) = new."ID_CSM";
-	maso_Product character varying(20) = new."ID_Product"
-	quantity int = new."Quantity";
+	maso_Product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
 begin
 -- 	import
 	UPDATE public."Import"
@@ -19,18 +20,20 @@ begin
 -- 	warehouse detail insert
 	INSERT INTO public."WareHouse_detail"(
 		"ID_Product", "ID_CSM", "Quantity")
-		VALUES (maso_CSM, maso_Product, quantity);
+		VALUES (maso_Product,maso_CSM, quantity);
 return new;
 end;
 $body$
 language plpgsql;
 
-create trigger check_insert_im_d
+create or replace trigger check_insert_im
 after insert
 on "Import_detail"
 for each row
 execute procedure insert_import_detail();
 
+-- drop trigger if exists check_insert_im on "Import_detail";
+-- drop function if exists insert_import_detail();
 
 -- IF
 -- do $$

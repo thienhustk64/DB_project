@@ -1,0 +1,42 @@
+/*5.Delete*/
+DROP FUNCTION IF EXISTS find_by_table(_table character varying);
+DROP FUNCTION find_by_import_date_mouse(Date);
+DROP FUNCTION find_by_import_date_key(Date);
+DROP FUNCTION find_by_import_date_head(Date);
+DROP FUNCTION find_by_import_date_lap(Date);
+DROP TRIGGER IF EXISTS check_status_wh ON "WareHouse";
+DROP FUNCTION IF EXISTS count_product_wh();
+
+ALTER TABLE "Laptop"
+	DROP COLUMN doc_weights;
+DROP TRIGGER IF EXISTS tsvectorupdate ON "Laptop";
+DROP FUNCTION IF EXISTS lap_tsvector_trigger();
+DROP FUNCTION IF EXISTS find_by_option_lap(_option character varying);
+
+ALTER TABLE "HeadPhone"
+	DROP COLUMN doc_weights;
+DROP TRIGGER IF EXISTS tsvectorupdate ON "HeadPhone";
+DROP FUNCTION IF EXISTS head_tsvector_trigger();
+DROP FUNCTION IF EXISTS find_by_option_head(_option character varying);
+
+ALTER TABLE "Mouse"
+	DROP COLUMN doc_weights;
+DROP TRIGGER IF EXISTS tsvectorupdate ON "Mouse";
+DROP FUNCTION IF EXISTS mouse_tsvector_trigger();
+DROP FUNCTION IF EXISTS find_by_option_mouse(_option character varying);
+
+ALTER TABLE "KeyBoard"
+	DROP COLUMN doc_weights;
+DROP TRIGGER IF EXISTS tsvectorupdate ON "KeyBoard";
+DROP FUNCTION IF EXISTS key_tsvector_trigger();
+DROP FUNCTION IF EXISTS find_by_option_key(_option character varying);
+
+-- Thien
+drop trigger if exists check_insert_lt on "Laptop";
+drop trigger if exists check_insert_kb on "KeyBoard";
+drop trigger if exists check_insert_m on "Mouse";
+drop trigger if exists check_insert_hp on "HeadPhone";
+drop function if exists insert_wh();
+
+drop trigger if exists check_insert_im on "Import_detail";
+drop function if exists insert_import_detail();

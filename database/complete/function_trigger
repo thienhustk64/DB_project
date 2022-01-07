@@ -1,0 +1,318 @@
+/*1.Tim kiem theo bang(phan loai)*/
+CREATE OR REPLACE FUNCTION find_by_table(_table character varying)
+RETURNS TABLE (id_product character varying, name_product character varying, price numeric)
+AS
+$$
+BEGIN
+	IF (_table = 'Laptop')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "Laptop" a;
+	ELSIF (_table = 'HeadPhone')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "HeadPhone" a;
+	ELSIF (_table = 'KeyBoard')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "KeyBoard" a;
+	ELSIF (_table = 'Mouse')
+	THEN
+		RETURN QUERY SELECT a."ID", a."Name", a."Price"
+		FROM "Mouse" a;
+	ELSE
+		RAISE NOTICE 'The % could not be found', _table;
+	END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+/*2.Tim kiem theo thong tin co ban*/
+/*laptop*/
+ALTER TABLE "Laptop"
+	ADD COLUMN doc_weights tsvector;
+CREATE INDEX doc_weights_idx_lap
+	ON "Laptop"
+	USING GIN (doc_weights);
+UPDATE "Laptop"
+    SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("Brand"), 'A') ||
+	setweight(to_tsvector("Screen"), 'B') ||
+	setweight(to_tsvector("Status"), 'B') ||
+	setweight(to_tsvector("Keyboard"), 'C') ||
+	setweight(to_tsvector("Audio"), 'C') ||
+	setweight(to_tsvector("LAN"), 'C') ||
+	setweight(to_tsvector("Wireless"), 'D') ||
+	setweight(to_tsvector("Gate"), 'C') ||
+	setweight(to_tsvector("Size"), 'D') ||
+	setweight(to_tsvector("Security"), 'C') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("CPU"), 'C') ||
+	setweight(to_tsvector("VGA"), 'C') ||
+	setweight(to_tsvector("RAM"), 'C') ||
+	setweight(to_tsvector("ROM"), 'C') ||
+	setweight(to_tsvector("OS"), 'B') ||
+	setweight(to_tsvector("Color"), 'D');
+CREATE OR REPLACE FUNCTION lap_tsvector_trigger()
+RETURNS TRIGGER 
+AS
+$$
+BEGIN
+	new.doc_weights := 
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."Screen", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Keyboard", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Audio", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."LAN", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Wireless", '')), 'D') ||
+	setweight(to_tsvector('english', coalesce(new."Gate", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Size", '')), 'D') ||
+	setweight(to_tsvector('english', coalesce(new."Security", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."CPU", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."VGA", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."RAM", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."ROM", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."OS", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Color", '')), 'D');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger();
+	
+CREATE OR REPLACE FUNCTION find_by_option_lap(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, CPU character varying, VGA character varying, RAM character varying, ROM character varying, Screen character varying, Status character varying, Keyboard character varying, Audio character varying, LAN character varying, Wireless character varying, Gate character varying, OS character varying, size_product character varying, Color character varying, security_product character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "CPU", "VGA", "RAM", "ROM", "Screen", "Status", "Keyboard", "Audio", "LAN", "Wireless", "Gate", "OS", "Size", "Color", "Security"
+	FROM "Laptop"
+	WHERE doc_weights @@ to_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+/*headphone*/
+ALTER TABLE "HeadPhone"
+	ADD COLUMN doc_weights tsvector;
+CREATE INDEX doc_weights_idx_head
+	ON "HeadPhone"
+	USING GIN (doc_weights);
+UPDATE "HeadPhone"
+SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("Status"), 'C') ||
+	setweight(to_tsvector("Type"), 'B') ||
+	setweight(to_tsvector("Color"), 'C') ||
+	setweight(to_tsvector("Led"), 'C') ||
+	setweight(to_tsvector("Brand"), 'A');
+CREATE OR REPLACE FUNCTION head_tsvector_trigger()
+RETURNS trigger 
+AS
+$$
+BEGIN
+	new.doc_weights :=
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Led", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Type", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Color", '')), 'C');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger();
+	
+CREATE OR REPLACE FUNCTION find_by_option_head(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, status character varying, type_product character varying, Led character varying, Color character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "Status", "Type", "Led", "Color"
+	FROM "HeadPhone"
+	WHERE doc_weights @@ to_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+/*mouse*/
+ALTER TABLE "Mouse"
+	ADD COLUMN doc_weights tsvector;
+CREATE INDEX doc_weights_idx_mouse
+	ON "Mouse"
+	USING GIN (doc_weights);
+UPDATE "Mouse"
+SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("Brand"), 'A') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("Status"), 'C') ||
+	setweight(to_tsvector("Color"), 'C') ||
+	setweight(to_tsvector("Size"), 'C') ||
+	setweight(to_tsvector("Led"), 'C');
+CREATE OR REPLACE FUNCTION mouse_tsvector_trigger()
+RETURNS trigger 
+AS
+$$
+BEGIN
+	new.doc_weights :=
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Color", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Size", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Led", '')), 'C');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger();
+	
+CREATE OR REPLACE FUNCTION find_by_option_mouse(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, Status character varying, Color character varying, size_product character varying, Led character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "Status", "Color", "Size", "Led"
+	FROM "Mouse"
+	WHERE doc_weights @@ to_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+/*keyboard*/
+ALTER TABLE "KeyBoard"
+	ADD COLUMN doc_weights tsvector;
+CREATE INDEX doc_weights_idx_key
+	ON "KeyBoard"
+	USING GIN (doc_weights);
+UPDATE "KeyBoard"
+SET doc_weights = setweight(to_tsvector("Name"), 'A') ||
+	setweight(to_tsvector("Brand"), 'A') ||
+	setweight(to_tsvector("From"), 'B') ||
+	setweight(to_tsvector("Status"), 'C') ||
+	setweight(to_tsvector("Switch"), 'B') ||
+	setweight(to_tsvector("Led"), 'C') ||
+	setweight(to_tsvector("Type"), 'C');
+CREATE OR REPLACE FUNCTION key_tsvector_trigger()
+RETURNS TRIGGER
+AS
+$$
+BEGIN
+	new.doc_weights :=
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A')||
+	setweight(to_tsvector('english', coalesce(new."Brand", '')), 'A') ||
+	setweight(to_tsvector('english', coalesce(new."From", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Status", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Switch", '')), 'B') ||
+	setweight(to_tsvector('english', coalesce(new."Led", '')), 'C') ||
+	setweight(to_tsvector('english', coalesce(new."Type", '')), 'C');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON "KeyBoard" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger();
+	
+CREATE OR REPLACE FUNCTION find_by_option_key(_option character varying)
+RETURNS TABLE (name_product character varying, brand character varying, from_product character varying, Status character varying, Switch character varying, Led character varying, type_product character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT "Name", "Brand", "From", "Status", "Switch", "Led", "Type"
+	FROM "KeyBoard"
+	WHERE doc_weights @@ to_tsquery(_option);
+END;
+$$
+LANGUAGE plpgsql;
+
+/*3.Tim kiem theo ngay nhap kho*/
+CREATE OR REPLACE FUNCTION find_by_import_date_lap(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, brand character varying, Price numeric,from_product character varying, Guatantee numeric, CPU character varying, RAM character varying, ROM character varying, VGA character varying, Screen character varying, Status character varying, Keyboard character varying, Audio character varying, LAN character varying, Wireless character varying, Webcam boolean, Gate character varying, OS character varying, Battery numeric, Weight double precision, size_product character varying, Color character varying, security_product character varying, doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "Laptop" lap,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = lap."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_by_import_date_head(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, Price numeric, from_product character varying, Wireless boolean, Status character varying, Guarantee numeric, Type character varying,  Led character varying,  Color character varying, Micro boolean, brand character varying, doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "HeadPhone" head,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = head."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_by_import_date_key(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, Brand character varying, Price numeric, from_product character varying, Wireless boolean, Status character varying, Switch character varying, Led character varying, Type character varying,  Weight character varying, doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "KeyBoard" key,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = key."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_by_import_date_mouse(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, Brand character varying, Price numeric, from_product character varying, Wireless boolean, Status character varying, DPI numeric, IPS numeric, Color character varying, Size character varying, Weight double precision, Led character varying,doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "Mouse" mouse,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = mouse."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION count_product_wh()
+RETURNS TRIGGER
+AS
+$BODY$
+BEGIN
+		IF NEW."Quantity" = 0 
+		THEN
+			UPDATE "HeadPhone"
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "KeyBoard"
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Mouse"
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Laptop"
+			SET "Status" = 'OutStock' WHERE "ID" = NEW."ID_Product";
+			RAISE NOTICE 'The product % was out of stock', NEW."ID_Product";
+		ELSE	
+			UPDATE "HeadPhone"
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "KeyBoard"
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Laptop"
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
+			UPDATE "Mouse"
+			SET "Status" = 'InStock' WHERE "ID" = NEW."ID_Product";
+		END IF;
+	RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER check_status_wh
+AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();

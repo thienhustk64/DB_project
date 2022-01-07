@@ -25,7 +25,7 @@ random_date = date(2021, 1, 1)
 time_between_dates = date(2021, 2, 1) - date(2021, 1, 1)
 
 with open( file, mode = "w") as f:
-	for i in range( 1):
+	for i in range( 5):
 		n = []
 		start_date = random_date
 		days_between_dates = time_between_dates.days

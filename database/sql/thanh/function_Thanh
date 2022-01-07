@@ -232,56 +232,112 @@ $$
 LANGUAGE plpgsql;
 
 /*3.Tim kiem theo ngay nhap kho*/
+CREATE OR REPLACE FUNCTION find_by_import_date_lap(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, brand character varying, Price numeric,from_product character varying, Guatantee numeric, CPU character varying, RAM character varying, ROM character varying, VGA character varying, Screen character varying, Status character varying, Keyboard character varying, Audio character varying, LAN character varying, Wireless character varying, Webcam boolean, Gate character varying, OS character varying, Battery numeric, Weight double precision, size_product character varying, Color character varying, security_product character varying, doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "Laptop" lap,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = lap."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_by_import_date_head(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, Price numeric, from_product character varying, Wireless boolean, Status character varying, Guarantee numeric, Type character varying,  Led character varying,  Color character varying, Micro boolean, brand character varying, doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "HeadPhone" head,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = head."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_by_import_date_key(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, Brand character varying, Price numeric, from_product character varying, Wireless boolean, Status character varying, Switch character varying, Led character varying, Type character varying,  Weight character varying, doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "KeyBoard" key,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = key."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_by_import_date_mouse(day Date)
+RETURNS TABLE (ID character varying, name_product character varying, Brand character varying, Price numeric, from_product character varying, Wireless boolean, Status character varying, DPI numeric, IPS numeric, Color character varying, Size character varying, Weight double precision, Led character varying,doc_weights tsvector,ID_Product character varying, ID_CSM character varying, ID_CSM_wh character varying)
+AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM "Mouse" mouse,
+	(SELECT whd."ID_Product", whd."ID_CSM" FROM "WareHouse_detail" AS whd) whd,
+			(SELECT im."ID_CSM" FROM "Import" AS im WHERE im."Day" = day::date) im 
+				WHERE whd."ID_Product" = mouse."ID" AND whd."ID_CSM" = im."ID_CSM";
+END;
+$$
+LANGUAGE plpgsql;
+
+/*1.test*/
+-- SELECT * FROM find_by_import_date_mouse('2021-01-19');
+-- SELECT * FROM find_by_import_date_mouse('05-01-2022');
 
 
+--SELECT * FROM find_by_import_date_key('05-01-2022');
+--SELECT * FROM find_by_import_date_key('06-01-2022');
 
-/*4.Test*/
 
---SELECT * FROM find_by_table('KeyBoard');
+--SELECT * FROM find_by_import_date_head('06-01-2022');
+--SELECT * FROM find_by_import_date_head('05-01-2022');
 
---SELECT * FROM find_by_option_lap('AM:*');
 
---SELECT * FROM find_by_option_head('Bl:*');
+--SELECT * FROM find_by_import_date_lap('05-01-2022');
+--SELECT * FROM find_by_import_date_lap('06-01-2022');
 
---SELECT * FROM find_by_option_mouse('B:*');
 
---SELECT * FROM find_by_option_key('Leo:*');
+/*3. Delete*/
 
---SELECT * FROM find_by_option_lap('In<->Stock');
---SELECT * FROM find_by_option_lap('OutStock');
---SELECT * FROM find_by_option_head('In<->Stock');
---SELECT * FROM find_by_option_head('Out<->Stock');
---SELECT * FROM find_by_option_mouse('InStock');
---SELECT * FROM find_by_option_mouse('OutStock');
---SELECT * FROM find_by_option_key('In<->Stock');
---SELECT * FROM find_by_option_key('Out<->Stock');
+-- DROP FUNCTION find_by_import_date_mouse(Date);
+--DROP FUNCTION find_by_import_date_key(Date);
+--DROP FUNCTION find_by_import_date_head(Date);
+--DROP FUNCTION find_by_import_date_lap(Date);
+/*
+DELETE FROM "WareHouse_detail";
+DELETE FROM "Import";
+*/
 
 /*5.Delete*/
 --DROP FUNCTION IF EXISTS find_by_table(_table character varying);
 
---ALTER TABLE "Laptop"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "Laptop";
---DROP FUNCTION IF EXISTS lap_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_lap(_option character varying);
+-- ALTER TABLE "Laptop"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "Laptop";
+-- DROP FUNCTION IF EXISTS lap_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_lap(_option character varying);
 
---ALTER TABLE "HeadPhone"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "HeadPhone";
---DROP FUNCTION IF EXISTS head_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_head(_option character varying);
+-- ALTER TABLE "HeadPhone"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "HeadPhone";
+-- DROP FUNCTION IF EXISTS head_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_head(_option character varying);
 
---ALTER TABLE "Mouse"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "Mouse";
---DROP FUNCTION IF EXISTS mouse_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_mouse(_option character varying);
+-- ALTER TABLE "Mouse"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "Mouse";
+-- DROP FUNCTION IF EXISTS mouse_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_mouse(_option character varying);
 
---ALTER TABLE "KeyBoard"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "KeyBoard";
---DROP FUNCTION IF EXISTS key_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_key(_option character varying);
+-- ALTER TABLE "KeyBoard"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "KeyBoard";
+-- DROP FUNCTION IF EXISTS key_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_key(_option character varying);
 
 
 
