@@ -285,8 +285,8 @@ $$
 LANGUAGE plpgsql;
 
 /*1.test*/
---SELECT * FROM find_by_import_date_mouse('06-01-2022');
---SELECT * FROM find_by_import_date_mouse('05-01-2022');
+-- SELECT * FROM find_by_import_date_mouse('2020-01-05');
+-- SELECT * FROM find_by_import_date_mouse('05-01-2022');
 
 
 --SELECT * FROM find_by_import_date_key('05-01-2022');
@@ -357,29 +357,29 @@ DELETE FROM "Import";
 /*5.Delete*/
 --DROP FUNCTION IF EXISTS find_by_table(_table character varying);
 
---ALTER TABLE "Laptop"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "Laptop";
---DROP FUNCTION IF EXISTS lap_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_lap(_option character varying);
+-- ALTER TABLE "Laptop"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "Laptop";
+-- DROP FUNCTION IF EXISTS lap_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_lap(_option character varying);
 
---ALTER TABLE "HeadPhone"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "HeadPhone";
---DROP FUNCTION IF EXISTS head_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_head(_option character varying);
+-- ALTER TABLE "HeadPhone"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "HeadPhone";
+-- DROP FUNCTION IF EXISTS head_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_head(_option character varying);
 
---ALTER TABLE "Mouse"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "Mouse";
---DROP FUNCTION IF EXISTS mouse_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_mouse(_option character varying);
+-- ALTER TABLE "Mouse"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "Mouse";
+-- DROP FUNCTION IF EXISTS mouse_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_mouse(_option character varying);
 
---ALTER TABLE "KeyBoard"
---	DROP COLUMN doc_weights;
---DROP TRIGGER IF EXISTS tsvectorupdate ON "KeyBoard";
---DROP FUNCTION IF EXISTS key_tsvector_trigger();
---DROP FUNCTION IF EXISTS find_by_option_key(_option character varying);
+-- ALTER TABLE "KeyBoard"
+-- 	DROP COLUMN doc_weights;
+-- DROP TRIGGER IF EXISTS tsvectorupdate ON "KeyBoard";
+-- DROP FUNCTION IF EXISTS key_tsvector_trigger();
+-- DROP FUNCTION IF EXISTS find_by_option_key(_option character varying);
 
 
 

@@ -1,44 +1,3 @@
-
--- INSERT WAREHOUSE
-create or replace function insert_wh()
-returns trigger
-as $body$
-declare
-	maso character varying(20) = new."ID";
-begin
-	INSERT INTO public."WareHouse"(
-	"ID_Product", "Quantity", "Quantity_sell", "Quantity_wait")
-	VALUES ( maso, 0, 0, 0);
-return new;
-end;
-$body$
-language plpgsql;
-
-create trigger check_insert_lt
-before insert
-on "Laptop"
-for each row
-execute procedure insert_wh();
-
-create trigger check_insert_m
-before insert
-on "Mouse"
-for each row
-execute procedure insert_wh();
-
-create trigger check_insert_hp
-before insert
-on "HeadPhone"
-for each row
-execute procedure insert_wh();
-
-create trigger check_insert_kb
-before insert
-on "KeyBoard"
-for each row
-execute procedure insert_wh();
-
-
 -- INSERT IMPORT (chua run)
 
 create or replace function insert_import_detail()
@@ -51,16 +10,16 @@ declare
 begin
 -- 	import
 	UPDATE public."Import"
-		SET "Quantity" = "Quantity" + quantity;
+		SET "Quantity" = "Quantity" + quantity
 		WHERE "ID_CSM" = maso_CSM;
 -- 	warehouse
 	UPDATE public."WareHouse"
-		SET "ID_Product"=?, "Quantity"=?, "Quantity_sell"=?, "Quantity_wait"=?
-		WHERE <condition>;
+		SET "Quantity" = "Quantity" + quantity
+		WHERE "ID_Product" = maso_Product;
 -- 	warehouse detail insert
 	INSERT INTO public."WareHouse_detail"(
 		"ID_Product", "ID_CSM", "Quantity")
-		VALUES (?, ?, ?);
+		VALUES (maso_CSM, maso_Product, quantity);
 return new;
 end;
 $body$
