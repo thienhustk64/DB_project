@@ -1,4 +1,4 @@
--- INSERT IMPORT (chua run)
+-- INSERT IMPORT
 
 create or replace function insert_import_detail()
 returns trigger

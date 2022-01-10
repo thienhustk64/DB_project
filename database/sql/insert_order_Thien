@@ -1,0 +1,57 @@
+create or replace function insert_order_detail()
+returns trigger
+as
+$body$
+declare
+	maso_Order character varying(20) = new."ID_Order";
+	maso_Product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+	n numeric = new."Quantity";
+begin
+-- 	import
+	UPDATE public."Order"
+		SET "Quantity" = "Quantity" + quantity
+		WHERE "ID_Order" = maso_Order;
+-- 	warehouse
+	UPDATE public."WareHouse"
+		SET "Quantity" = "Quantity" - quantity
+		WHERE "ID_Product" = maso_Product;
+-- 	warehouse detail update
+	FOR i IN 1..n
+	LOOP
+		IF 
+			(select t."Quantity" from (select row_number() over ( order by "ID_CSM" desc) as "STT", *
+				from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+				where t."STT" = i) > quantity
+		THEN
+			UPDATE public."WareHouse_detail"
+				SET "Quantity"= "Quantity" - quantity
+				WHERE "ID_Product" = maso_Product 
+				and "ID_CSM" = (select t."ID_CSM" from (select row_number() over ( order by "ID_CSM" desc) as "STT", *
+								from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+								where t."STT" = i);
+			quantity = 0;
+		ELSE
+			UPDATE public."WareHouse_detail"
+				SET "Quantity"= 0
+				WHERE "ID_Product" = maso_Product 
+				and "ID_CSM" = (select t."ID_CSM" from (select row_number() over ( order by "ID_CSM" desc) as "STT", *
+								from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+								where t."STT" = i);
+			quantity = (select t."Quantity" from (select row_number() over ( order by "ID_CSM" desc) as "STT", *
+							from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+							where t."STT" = i) - quantity;
+		END IF;
+		exit when quantity = 0;
+	END LOOP;	
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_insert_order
+after insert
+on "Order_detail"
+for each row
+execute procedure insert_order_detail();
+

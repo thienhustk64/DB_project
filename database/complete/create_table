@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS public."WareHouse"
 
 CREATE TABLE IF NOT EXISTS public."Order"
 (
-    "ID_Order" character varying,
+    "ID_Order" character varying(20),
     "Day" date NOT NULL,
     "Quantity" numeric NOT NULL,
     PRIMARY KEY ("ID_Order")
