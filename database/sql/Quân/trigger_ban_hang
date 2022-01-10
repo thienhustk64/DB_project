@@ -1,0 +1,73 @@
+/*1.Dat hang san pham*/
+create or replace function insert_order_detail()
+returns trigger
+as
+$body$
+declare
+	_id_order character varying(20) = new."ID_Order";
+	_id_product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+	_status character varying(20) = new."Status";
+begin
+
+--warehouse
+	UPDATE public."WareHouse"
+		SET "Quantity" = "Quantity" - quantity , "Quantity_wait" = "Quantity_wait" + quantity
+		WHERE "ID_Product" = _id_product;
+
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_insert_order
+after insert
+on "Order_detail"
+for each row
+execute procedure insert_order_detail();
+
+-- drop trigger if exists check_insert_order on "Order_detail";
+-- drop function if exists insert_order_detail();
+
+/*2.Ban san pham*/
+create or replace function update_order_detail()
+returns trigger
+as
+$body$
+declare
+	_id_order character varying(20) = new."ID_Order";
+	_id_product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+	_status character varying(20) = new."Status";
+begin
+	IF _status = 'sold'
+	THEN
+--warehouse
+	UPDATE public."WareHouse"
+		SET "Quantity_sell" = "Quantity_sell" + quantity , "Quantity_wait" = "Quantity_wait" - quantity
+		WHERE "ID_Product" = _id_product;
+	ELSIF _status = 'cancel'
+	THEN
+	UPDATE public."WareHouse"
+		SET "Quantity" = "Quantity" + quantity , "Quantity_wait" = "Quantity_wait" - quantity
+		WHERE "ID_Product" = _id_product;	
+	END IF;
+
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_update_order
+after update
+on "Order_detail"
+for each row
+execute procedure update_order_detail();
+
+-- drop trigger if exists check_update_order on "Order_detail";
+-- drop function if exists update_order_detail();
+
+
+
+
+

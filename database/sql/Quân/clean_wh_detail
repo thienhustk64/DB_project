@@ -1,0 +1,32 @@
+/*3.Xoa lo hang da ban het*/
+create or replace function check_wh_detail()
+returns trigger
+as
+$body$
+declare
+	_id_order character varying(20) = new."ID_Order";
+	_id_product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+	_status character varying(20) = new."Status";
+begin
+	IF _status = 'sold'
+	THEN
+--warehouse
+	DELETE FROM "WareHouse_detail"
+		WHERE "ID_Product" = _id_product and "Quantity" = '0';	
+	END IF;
+
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_warehouse_detail
+after update
+on "Order_detail"
+for each row
+execute procedure check_wh_detail();
+
+-- drop trigger if exists check_warehouse_detail on "Order_detail";
+-- drop function if exists check_wh_detail();
+
