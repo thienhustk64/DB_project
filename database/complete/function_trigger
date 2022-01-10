@@ -316,3 +316,281 @@ $BODY$
 LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER check_status_wh
 AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
+
+create or replace function insert_import_detail()
+returns trigger
+as
+$body$
+declare
+	maso_CSM character varying(20) = new."ID_CSM";
+	maso_Product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+begin
+-- 	import
+	UPDATE public."Import"
+		SET "Quantity" = "Quantity" + quantity
+		WHERE "ID_CSM" = maso_CSM;
+-- 	warehouse
+	UPDATE public."WareHouse"
+		SET "Quantity" = "Quantity" + quantity
+		WHERE "ID_Product" = maso_Product;
+-- 	warehouse detail insert
+	INSERT INTO public."WareHouse_detail"(
+		"ID_Product", "ID_CSM", "Quantity")
+		VALUES (maso_Product,maso_CSM, quantity);
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_insert_im
+after insert
+on "Import_detail"
+for each row
+execute procedure insert_import_detail();
+
+create or replace function insert_order_detail()
+returns trigger
+as
+$body$
+declare
+	maso_Order character varying(20) = new."ID_Order";
+	maso_Product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+	n numeric = new."Quantity";
+begin
+-- 	import
+	UPDATE public."Order"
+		SET "Quantity" = "Quantity" + quantity
+		WHERE "ID_Order" = maso_Order;
+	UPDATE public."WareHouse"
+		SET "Quantity" = "Quantity" - quantity , "Quantity_wait" = "Quantity_wait" + quantity
+		WHERE "ID_Product" = maso_Product;
+	FOR i IN 1..n
+	LOOP
+		IF 
+			(select t."Quantity" from (select row_number() over ( order by "ID_CSM") as "STT", *
+				from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+				where t."STT" = i) >= quantity
+		THEN
+			BEGIN
+				UPDATE public."WareHouse_detail"
+					SET "Quantity"= "Quantity" - quantity
+					WHERE "ID_Product" = maso_Product 
+					and "ID_CSM" = (select t."ID_CSM" from (select row_number() over ( order by "ID_CSM") as "STT", *
+									from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+									where t."STT" = i);
+			END;
+			exit;
+		ELSE
+			BEGIN
+				UPDATE public."WareHouse_detail"
+					SET "Quantity"= "Quantity" + (select t."Quantity" from (select row_number() over ( order by "ID_CSM") as "STT", *
+													from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+													where t."STT" = i)
+					WHERE "ID_Product" = maso_Product 
+					and "ID_CSM" = (select t."ID_CSM" from (select row_number() over ( order by "ID_CSM") as "STT", *
+									from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+									where t."STT" = i + 1);
+				UPDATE public."WareHouse_detail"
+					SET "Quantity"= 0
+					WHERE "ID_Product" = maso_Product 
+					and "ID_CSM" = (select t."ID_CSM" from (select row_number() over ( order by "ID_CSM") as "STT", *
+									from "WareHouse_detail" where "ID_Product" = maso_Product) as t
+									where t."STT" = i);
+			END;
+		END IF;
+	END LOOP;	
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_insert_order
+after insert
+on "Order_detail"
+for each row
+execute procedure insert_order_detail();
+
+-- INSERT WAREHOUSE
+create or replace function insert_wh()
+returns trigger
+as $body$
+declare
+	maso character varying(20) = new."ID";
+begin
+	INSERT INTO public."WareHouse"(
+	"ID_Product", "Quantity", "Quantity_sell", "Quantity_wait")
+	VALUES ( maso, 0, 0, 0);
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_insert_lt
+before insert
+on "Laptop"
+for each row
+execute procedure insert_wh();
+
+create or replace trigger check_insert_m
+before insert
+on "Mouse"
+for each row
+execute procedure insert_wh();
+
+create or replace trigger check_insert_hp
+before insert
+on "HeadPhone"
+for each row
+execute procedure insert_wh();
+
+create or replace trigger check_insert_kb
+before insert
+on "KeyBoard"
+for each row
+execute procedure insert_wh();
+
+create or replace function update_order_detail()
+returns trigger
+as
+$body$
+declare
+	_id_order character varying(20) = new."ID_Order";
+	_id_product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+	_status character varying(20) = new."Status";
+begin
+	IF _status = 'sold'
+	THEN
+--warehouse
+	UPDATE public."WareHouse"
+		SET "Quantity_sell" = "Quantity_sell" + quantity , "Quantity_wait" = "Quantity_wait" - quantity
+		WHERE "ID_Product" = _id_product;
+	ELSIF _status = 'cancel'
+	THEN
+	UPDATE public."WareHouse"
+		SET "Quantity" = "Quantity" + quantity , "Quantity_wait" = "Quantity_wait" - quantity
+		WHERE "ID_Product" = _id_product;	
+	END IF;
+
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_update_order
+after update
+on "Order_detail"
+for each row
+execute procedure update_order_detail();
+
+create or replace function check_wh_detail()
+returns trigger
+as
+$body$
+declare
+	_id_order character varying(20) = new."ID_Order";
+	_id_product character varying(20) = new."ID_Product";
+	quantity numeric = new."Quantity";
+	_status character varying(20) = new."Status";
+begin
+	IF _status = 'sold'
+	THEN
+--warehouse
+	DELETE FROM "WareHouse_detail"
+		WHERE "ID_Product" = _id_product and "Quantity" = '0';	
+	END IF;
+
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_warehouse_detail
+after update
+on "Order_detail"
+for each row
+execute procedure check_wh_detail();
+
+CREATE OR REPLACE FUNCTION find_by_year(_year numeric)
+RETURNS TABLE (_ID_Order character varying, _ID_Product character varying, _Quantity numeric, _status character varying , _Day date)
+AS
+$$
+BEGIN
+	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."Status", c."Day"
+FROM "Order_detail" as e
+LEFT JOIN "Order" as c ON e."ID_Order" = c."ID_Order"
+WHERE EXTRACT(YEAR FROM "Day") = _year
+ORDER BY "ID_Order" ASC);
+END;
+$$
+LANGUAGE plpgsql;
+/*test*/
+
+-- DROP FUNCTION find_by_year(numeric);
+-- SELECT * FROM find_by_year('2021');
+
+/*2.Tim kiem theo thang*/
+/*function*/
+
+CREATE OR REPLACE FUNCTION find_by_month(_month numeric, _year numeric)
+RETURNS TABLE (_ID_Order character varying, _ID_Product character varying, _Quantity numeric, _status character varying , _Day date)
+AS
+$$
+BEGIN
+	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."Status", c."Day"
+FROM "Order_detail" as e
+LEFT JOIN "Order" as c ON e."ID_Order" = c."ID_Order"
+WHERE EXTRACT(YEAR FROM "Day") = _year and EXTRACT(MONTH FROM "Day") = _month
+ORDER BY "ID_Order" ASC);
+END;
+$$
+LANGUAGE plpgsql;
+
+/*test*/
+-- DROP FUNCTION find_by_month(numeric,numeric);
+-- SELECT * FROM find_by_month('6','2021');
+
+/*3.Tim kiem theo ngay*/
+/*function*/
+
+CREATE OR REPLACE FUNCTION find_by_day(day_find date)
+RETURNS TABLE (_ID_Order character varying, _ID_Product character varying, _Quantity numeric, _status character varying , _Day date)
+AS
+$$
+BEGIN
+	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."Status", c."Day"
+FROM "Order_detail" as e
+LEFT JOIN "Order" as c ON e."ID_Order" = c."ID_Order"
+WHERE c."Day" = day_find
+ORDER BY "ID_Order" ASC);
+END;
+$$
+LANGUAGE plpgsql;
+
+
+
+
+create or replace function update_status_order()
+returns trigger
+as
+$body$
+declare
+	_id_order character varying(20) = new."ID_Order";
+	_status character varying(20) = new."Status";
+begin
+	UPDATE "Order_detail" SET "Status" = _status
+		WHERE "ID_Order" = _id_order;
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_order_update
+after update
+on "Order"
+for each row
+execute procedure update_status_order();
+
+

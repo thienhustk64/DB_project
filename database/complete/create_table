@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS public."Order"
     "ID_Order" character varying(20),
     "Day" date NOT NULL,
     "Quantity" numeric NOT NULL,
+	"Status" character varying(20),
     PRIMARY KEY ("ID_Order")
 );
 
@@ -119,7 +120,8 @@ CREATE TABLE IF NOT EXISTS public."Order_detail"
 (
     "ID_Order" character varying(20) NOT NULL,
     "ID_Product" character varying(20) NOT NULL,
-    "Quantity" numeric NOT NULL
+    "Quantity" numeric NOT NULL,
+	"Status" character varying(20)
 );
 
 CREATE TABLE IF NOT EXISTS public."WareHouse_detail"

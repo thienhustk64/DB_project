@@ -352,3 +352,5 @@ INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity")
 						VALUES ('I5', 'L32', 10);
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
 						VALUES ('I5', 'L8', 5);
+
+

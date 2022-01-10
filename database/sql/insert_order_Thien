@@ -66,7 +66,10 @@ execute procedure insert_order_detail();
 -- drop function if exists insert_order_detail();
 
 -- INSERT INTO public."Order"("ID_Order", "Day", "Quantity", "Status") 
--- 					VALUES ('O2', '2021-06-27', 0, 'Wait');
+-- 					VALUES ('O1', '2021-06-27', 0, 'Wait');
 -- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
--- 						VALUES ('O2', 'K23', 15,'Wait');
-
+-- 						VALUES ('O1', 'K23', 15,'Wait');
+-- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
+--                         VALUES ('O1', 'H10', 15,'Wait');
+-- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
+--                         VALUES ('O1', 'K28', 8,'Wait');

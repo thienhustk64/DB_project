@@ -2,9 +2,9 @@
 INSERT INTO public."Order"("ID_Order", "Day", "Quantity", "Status") 
                     VALUES ('O1', '2021-06-20', 0, 'Wait');
 INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
-                        VALUES ('O1', 'H1', 15,'Wait');
+                        VALUES ('O1', 'H10', 15,'Wait');
 INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
-                        VALUES ('O1', 'L31', 8,'Wait');
+                        VALUES ('O1', 'K28', 8,'Wait');
 INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
                         VALUES ('O1', 'H8', 10,'Wait');
 INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
@@ -30,9 +30,9 @@ UPDATE "WareHouse" SET "Quantity" = '100';
 UPDATE "WareHouse" SET "Quantity_sell" = '0';
 UPDATE "WareHouse" SET "Quantity_wait" = '0';
 
-UPDATE "Order_detail" SET "Status" = 'sold'
+UPDATE "Order" SET "Status" = 'sold'
 WHERE "ID_Order" = 'O1';
-UPDATE "Order_detail" SET "Status" = 'cancel'
+UPDATE "Order" SET "Status" = 'cancel'
 WHERE "ID_Order" = 'O2';
 /*2.Test xoa lo hang da ban het*/
 
