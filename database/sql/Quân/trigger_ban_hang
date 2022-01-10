@@ -26,7 +26,7 @@ on "Order_detail"
 for each row
 execute procedure insert_order_detail();
 
--- drop trigger if exists check_insert_order on "Order_detail";
+-- drop trigger if exists check_insert_order on "Order_detail";a
 -- drop function if exists insert_order_detail();
 
 /*2.Ban san pham*/

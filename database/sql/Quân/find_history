@@ -6,7 +6,7 @@ RETURNS TABLE (_ID_Order character varying, _ID_Product character varying, _Quan
 AS
 $$
 BEGIN
-	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."status", c."Day"
+	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."Status", c."Day"
 FROM "Order_detail" as e
 LEFT JOIN "Order" as c ON e."ID_Order" = c."ID_Order"
 WHERE EXTRACT(YEAR FROM "Day") = _year
@@ -17,7 +17,7 @@ LANGUAGE plpgsql;
 /*test*/
 
 -- DROP FUNCTION find_by_year(numeric);
--- SELECT * FROM find_by_year('2020');
+-- SELECT * FROM find_by_year('2021');
 
 /*2.Tim kiem theo thang*/
 /*function*/
@@ -27,7 +27,7 @@ RETURNS TABLE (_ID_Order character varying, _ID_Product character varying, _Quan
 AS
 $$
 BEGIN
-	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."status", c."Day"
+	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."Status", c."Day"
 FROM "Order_detail" as e
 LEFT JOIN "Order" as c ON e."ID_Order" = c."ID_Order"
 WHERE EXTRACT(YEAR FROM "Day") = _year and EXTRACT(MONTH FROM "Day") = _month
@@ -38,7 +38,7 @@ LANGUAGE plpgsql;
 
 /*test*/
 -- DROP FUNCTION find_by_month(numeric,numeric);
--- SELECT * FROM find_by_month('1','2020');
+-- SELECT * FROM find_by_month('6','2021');
 
 /*3.Tim kiem theo ngay*/
 /*function*/
@@ -48,7 +48,7 @@ RETURNS TABLE (_ID_Order character varying, _ID_Product character varying, _Quan
 AS
 $$
 BEGIN
-	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."status", c."Day"
+	RETURN  QUERY (SELECT e."ID_Order", e."ID_Product", e."Quantity", e."Status", c."Day"
 FROM "Order_detail" as e
 LEFT JOIN "Order" as c ON e."ID_Order" = c."ID_Order"
 WHERE c."Day" = day_find
@@ -59,4 +59,4 @@ LANGUAGE plpgsql;
 
 /*test*/
 -- DROP FUNCTION find_by_day(date);
--- SELECT * FROM find_by_day('1/12/2021');
+-- SELECT * FROM find_by_day('2021-06-27');

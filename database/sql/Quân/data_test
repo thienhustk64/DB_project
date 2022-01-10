@@ -36,38 +36,41 @@ UPDATE "Order_detail" SET "Status" = 'cancel'
 WHERE "ID_Order" = 'O2';
 /*2.Test xoa lo hang da ban het*/
 
-INSERT INTO public."Order"("ID_Order", "Day", "Quantity", "Status") 
-                    VALUES ('O3', '2021-08-22', 0, 'Wait');
-INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
-                        VALUES ('O3', 'H1', 1,'Wait');
-INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
-                        VALUES ('O3', 'L31', 2,'Wait');
-INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
-                        VALUES ('O3', 'H8', 3,'Wait');
-INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
-                        VALUES ('O3', 'K26', 4,'Wait');
-INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
-                        VALUES ('O3', 'L1', 5,'Wait'); 
+-- INSERT INTO public."Order"("ID_Order", "Day", "Quantity", "Status") 
+--                     VALUES ('O3', '2021-08-22', 0, 'Wait');
+-- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
+--                         VALUES ('O3', 'H1', 1,'Wait');
+-- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
+--                         VALUES ('O3', 'L31', 2,'Wait');
+-- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
+--                         VALUES ('O3', 'H8', 3,'Wait');
+-- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
+--                         VALUES ('O3', 'K26', 4,'Wait');
+-- INSERT INTO public."Order_detail"("ID_Order", "ID_Product", "Quantity", "Status") 
+--                         VALUES ('O3', 'L1', 5,'Wait'); 
 
-INSERT INTO public."Import"("ID_CSM","Day","Quantity") values ('23','2020-12-10','10');
-INSERT INTO public."Import"("ID_CSM","Day","Quantity") values ('15','2020-1-10','10');
+-- INSERT INTO public."Import"("ID_CSM","Day","Quantity") values ('23','2020-12-10','10');
+-- INSERT INTO public."Import"("ID_CSM","Day","Quantity") values ('15','2020-1-10','10');
 
-INSERT INTO public."WareHouse_detail"("ID_Product","ID_CSM","Quantity") values ('H1','23','10') ;
-INSERT INTO public."WareHouse_detail"("ID_Product","ID_CSM","Quantity") values ('H3','15','10') ;
+-- INSERT INTO public."WareHouse_detail"("ID_Product","ID_CSM","Quantity") values ('H1','23','10') ;
+-- INSERT INTO public."WareHouse_detail"("ID_Product","ID_CSM","Quantity") values ('H3','15','10') ;
 
 
 
-UPDATE "Order_detail" SET "Status" = 'sold'
-WHERE "ID_Order" = 'O1';
+-- UPDATE "Order_detail" SET "Status" = 'sold'
+-- WHERE "ID_Order" = 'O3';
 
-UPDATE "WareHouse_detail" SET "Quantity" = 0
-WHERE "ID_CSM" = '23';
+-- UPDATE "WareHouse_detail" SET "Quantity" = 0
+-- WHERE "ID_CSM" = '23';
 
-SELECT * FROM public."WareHouse"
-WHERE "Quantity" < '100'
-ORDER BY "ID_Product" ASC;
+-- select * from "WareHouse_detail"
+-- where "ID_CSM" = '23';
 
-delete from "Order_detail";
-delete from "Order";
-delete from "WareHouse_detail";
-delete from "Import";
+-- SELECT * FROM public."WareHouse"
+-- WHERE "Quantity" < '100'
+-- ORDER BY "ID_Product" ASC;
+
+-- delete from "Order_detail";
+-- delete from "Order";
+-- delete from "WareHouse_detail";
+-- delete from "Import";
