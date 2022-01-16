@@ -1,13 +1,20 @@
-<?php
-    $cn = pg_connect( "host=ec2-23-23-199-57.compute-1.amazonaws.com port=5432 dbname=d5voph6nh682ao
-    user=xmttvyrbszbnze password=c467c601c9d08db139aacd4bc1e6148efa419eebc6ac5dc377b828673ffb463e");
-    if( $cn){
-        echo 'connected';
-    }
-
-    $result = pg_query( $cn, 'select * from "WareHouse"');
-    while ( $row = pg_fetch_object( $result)){
-        echo "<br/>".$row->ID_Product;
-    }
-    pg_close( $cn);
-?>
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <title>Web quản lý sản phẩm</title>
+    <link rel ="stylesheet" href ="css/style.css">
+    <link rel ="stylesheet" href ="font/themify-icons/themify-icons.css">
+</head>    
+<body>
+    <div class ="main_page">
+        <?php 
+            include("config.php");
+            include("main_pages/header.php");
+            include("main_pages/content.php");
+            include("main_pages/footer.php");
+         ?>
+    </div>
+</body>
+</html>
