@@ -29,11 +29,13 @@
                 }elseif($tmp == 'Import'){
                     include("main_pages/content/Import/index.php");
                 }elseif($tmp == 'Export'){
-                    include("main_pages/content/Export/index.php");
+                    include("main_pages/content/Export/order_find.php");
                 }elseif($tmp == 'HeadPhone' || $tmp == 'KeyBoard' ||$tmp == 'Mouse' || $tmp == 'Laptop'){
                     include("main_pages/content/WareHouse/product.php");
                 }elseif($tmp == 'findtool'){
                     include("main_pages/find.php");
+                }elseif($tmp = 'findorder'){
+                    include("main_pages/content/Export/order_detail.php");
                 }
             ?>
             </div>
