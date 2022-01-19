@@ -740,3 +740,34 @@ on "Order"
 for each row
 execute procedure match_order();
 
+create or replace function delete_import_detail()
+returns trigger
+as
+$body$
+declare
+	maso_CSM character varying(20) = old."ID_CSM";
+	maso_Product character varying(20) = old."ID_Product";
+	quantity numeric = old."Quantity";
+begin
+-- 	import
+	UPDATE public."Import"
+		SET "Quantity" = "Quantity" - quantity
+		WHERE "ID_CSM" = maso_CSM;
+-- 	warehouse
+	UPDATE public."WareHouse"
+		SET "Quantity" = "Quantity" - quantity
+		WHERE "ID_Product" = maso_Product;
+-- 	warehouse detail insert
+	DELETE FROM public."WareHouse_detail"
+	WHERE "ID_Product" = maso_Product and "ID_CSM" = maso_CSM;
+	 
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger check_delete_im
+after delete
+on "Import_detail"
+for each row
+execute procedure delete_import_detail();
