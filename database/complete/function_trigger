@@ -679,3 +679,64 @@ CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
 	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger_names();
 
 
+/*More update*/
+CREATE OR REPLACE FUNCTION find_1(_id character varying)
+RETURNS TABLE (id_product character varying, _name character varying, price numeric)
+AS
+$$
+BEGIN
+	IF (_id like 'L%')
+	THEN
+		RETURN QUERY SELECT e."ID_Product", c."Name", c."Price"
+		FROM "WareHouse" as e
+		INNER JOIN "Laptop"  as c ON e."ID_Product" = c."ID"
+		where "ID_Product" like (select concat(_id,'%'));
+	ELSIF (_id Like 'H%')
+	THEN
+		RETURN QUERY SELECT e."ID_Product", c."Name", c."Price"
+		FROM "WareHouse" as e
+		INNER JOIN "HeadPhone"  as c ON e."ID_Product" = c."ID"
+		where "ID_Product" like (select concat(_id,'%'));
+	ELSIF (_id Like 'M%')
+		THEN
+		RETURN QUERY SELECT e."ID_Product", c."Name", c."Price"
+		FROM "WareHouse" as e
+		INNER JOIN "Mouse"  as c ON e."ID_Product" = c."ID"
+		where "ID_Product" like (select concat(_id,'%'));
+	ELSIF (_id Like 'K%')
+		THEN
+		RETURN QUERY SELECT e."ID_Product", c."Name", c."Price"
+		FROM "WareHouse" as e
+		INNER JOIN "KeyBoard"  as c ON e."ID_Product" = c."ID"
+		where "ID_Product" like (select concat(_id,'%'));
+	END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+create or replace function match_order()
+returns trigger
+as
+$body$
+declare
+	_id_order character varying(20) = new."ID_Order";
+	_status character varying(20) = new."Status";
+begin
+
+--warehouse
+	UPDATE public."Order_detail"
+		SET "Status" = _status
+		WHERE "ID_Order" = _id_order;
+
+return new;
+end;
+$body$
+language plpgsql;
+
+create or replace trigger match_order_detail
+after update
+on "Order"
+for each row
+execute procedure match_order();
+

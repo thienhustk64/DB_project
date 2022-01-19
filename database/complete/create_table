@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS public."Order"
     "Day" date NOT NULL,
     "Quantity" numeric NOT NULL,
 	"Status" character varying(20),
+	"Total" numeric,
     PRIMARY KEY ("ID_Order")
 );
 
