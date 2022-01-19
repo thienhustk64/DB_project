@@ -284,8 +284,10 @@ END;
 $$
 LANGUAGE plpgsql;
 
+SELECT * FROM find_by_import_date_mouse('2021-01-25');
+
 /*1.test*/
--- SELECT * FROM find_by_import_date_mouse('2021-01-19');
+-- SELECT * FROM find_by_import_date_mouse('2021-01-25');
 -- SELECT * FROM find_by_import_date_mouse('05-01-2022');
 
 

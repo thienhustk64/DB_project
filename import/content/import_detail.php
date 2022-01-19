@@ -1,13 +1,8 @@
-<div class="button">
-                <button onclick="myCreateFunction()">+</button>
-                <button onclick="myDeleteFunction()">-</button>      
-            </div>
-
             <!-- Co the them duoc chuc nang xoa -->
             
             <div class="table_detail">
-                <form method="post" id="form_detail" action="index.php?import=insert&id_csm=<?=$id_CSM?>">
-                    <table style="width:20%">
+                <form method="post" id="form_detail" action="">
+                    <table class="table table-bordered table-hover" style="width:20%">
                         <tr>
                             <th style="width:50%" >ID</th>
                             <th style="width:50%"><?php echo $id_CSM?></th>
@@ -21,14 +16,18 @@
                             <th style="width:50%" id="row" name="n_row">0</th>
                         </tr>
                     </table>
-                    
-                    <table id="table_import" style="width:100%">
+                    <div class="button">
+                        <div class="btn btn-success" style="width: 10%; font-size: 20px;" onclick="myCreateFunction()"> + </div>   
+                        <div class="btn btn-warning" style="width: 10%; font-size: 20px;" onclick="myDeleteFunction()"> - </div>
+                    </div>
+
+                    <table class="table table-bordered table-hover"  id="table_import" style="width:100%">
                         <tr>
-                            <th>ID</th>
-                            <th>Quantity</th>
+                            <th style="width:20%">ID</th>
+                            <th style="width:80%">Quantity</th>
                         </tr>
                     </table>
-                    <button type="submit" value="Submit">Submit</button>
+                    <button class="btn btn-success" type="submit" value="Submit" style="width: 100px; font-size: 20px;">Submit</button>
                 </form>
                 
             </div>
