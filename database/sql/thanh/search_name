@@ -16,7 +16,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
 	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger_names();
 	
 --------------------------------------------------	
@@ -38,8 +38,8 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger_names();
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger_names();
 --------------------------------------------------	
 ALTER TABLE "KeyBoard"
 	ADD COLUMN doc_names tsvector;
@@ -59,8 +59,8 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger_names();
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+	ON "KeyBoard" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger_names();
 --------------------------------------------------	
 ALTER TABLE "Mouse"
 	ADD COLUMN doc_names tsvector;
@@ -80,5 +80,30 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger_names();
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger_names();
+	
+	
+	
+/*
+ALTER TABLE "Laptop"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "Laptop";
+DROP FUNCTION IF EXISTS lap_tsvector_trigger_names();
+
+ALTER TABLE "HeadPhone"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "HeadPhone";
+DROP FUNCTION IF EXISTS head_tsvector_trigger_names();
+
+ALTER TABLE "Mouse"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "Mouse";
+DROP FUNCTION IF EXISTS mouse_tsvector_trigger_names();
+
+ALTER TABLE "KeyBoard"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "KeyBoard";
+DROP FUNCTION IF EXISTS key_tsvector_trigger_names();
+
+*/

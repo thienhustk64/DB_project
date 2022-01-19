@@ -592,6 +592,91 @@ after update
 on "Order"
 for each row
 execute procedure update_status_order();
+/*4. Tim kiem theo ten*/
+ALTER TABLE "Laptop"
+	ADD COLUMN doc_names tsvector;
+CREATE INDEX doc_names_idx_lap
+	ON "Laptop"
+	USING GIN (doc_names);
+UPDATE "Laptop"
+    SET doc_names = setweight(to_tsvector("Name"), 'A');
+CREATE OR REPLACE FUNCTION lap_tsvector_trigger_names()
+RETURNS TRIGGER 
+AS
+$$
+BEGIN
+	new.doc_names := 
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger_names();
+	
+--------------------------------------------------	
+ALTER TABLE "HeadPhone"
+	ADD COLUMN doc_names tsvector;
+CREATE INDEX doc_names_idx_head
+	ON "HeadPhone"
+	USING GIN (doc_names);
+UPDATE "HeadPhone"
+    SET doc_names = setweight(to_tsvector("Name"), 'A');
+CREATE OR REPLACE FUNCTION head_tsvector_trigger_names()
+RETURNS TRIGGER 
+AS
+$$
+BEGIN
+	new.doc_names := 
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger_names();
+--------------------------------------------------	
+ALTER TABLE "KeyBoard"
+	ADD COLUMN doc_names tsvector;
+CREATE INDEX doc_names_idx_key
+	ON "KeyBoard"
+	USING GIN (doc_names);
+UPDATE "KeyBoard"
+    SET doc_names = setweight(to_tsvector("Name"), 'A');
+CREATE OR REPLACE FUNCTION key_tsvector_trigger_names()
+RETURNS TRIGGER 
+AS
+$$
+BEGIN
+	new.doc_names := 
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+	ON "KeyBoard" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger_names();
+--------------------------------------------------	
+ALTER TABLE "Mouse"
+	ADD COLUMN doc_names tsvector;
+CREATE INDEX doc_names_idx_mouse
+	ON "Mouse"
+	USING GIN (doc_names);
+UPDATE "Mouse"
+    SET doc_names = setweight(to_tsvector("Name"), 'A');
+CREATE OR REPLACE FUNCTION mouse_tsvector_trigger_names()
+RETURNS TRIGGER 
+AS
+$$
+BEGIN
+	new.doc_names := 
+	setweight(to_tsvector('english', coalesce(new."Name", '')), 'A');
+	RETURN new;
+END
+$$
+LANGUAGE plpgsql;
+CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger_names();
 
 
 /*More update*/

@@ -31,6 +31,27 @@ DROP TRIGGER IF EXISTS tsvectorupdate ON "KeyBoard";
 DROP FUNCTION IF EXISTS key_tsvector_trigger();
 DROP FUNCTION IF EXISTS find_by_option_key(_option character varying);
 
+ALTER TABLE "Laptop"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "Laptop";
+DROP FUNCTION IF EXISTS lap_tsvector_trigger_names();
+
+ALTER TABLE "HeadPhone"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "HeadPhone";
+DROP FUNCTION IF EXISTS head_tsvector_trigger_names();
+
+ALTER TABLE "Mouse"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "Mouse";
+DROP FUNCTION IF EXISTS mouse_tsvector_trigger_names();
+
+ALTER TABLE "KeyBoard"
+	DROP COLUMN doc_names;
+DROP TRIGGER IF EXISTS tsvectorupdateonname ON "KeyBoard";
+DROP FUNCTION IF EXISTS key_tsvector_trigger_names();
+
+
 -- Thien
 drop trigger if exists check_insert_lt on "Laptop";
 drop trigger if exists check_insert_kb on "KeyBoard";
