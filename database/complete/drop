@@ -40,3 +40,9 @@ drop function if exists insert_wh();
 
 drop trigger if exists check_insert_im on "Import_detail";
 drop function if exists insert_import_detail();
+
+-- More Update
+DROP FUNCTION find_1(character varying);
+
+drop trigger if exists check_insert_order on "Order_detail";
+drop function if exists insert_order_detail();
