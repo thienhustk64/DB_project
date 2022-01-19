@@ -1,13 +1,13 @@
-<ul>	
-		<li>Bảo hành: <?php echo number_format($abc['Guarantee']). ' tháng' ?></li>
-    	<li>Wireless: <?php 
-			if($abc['Wireless'] == false){
-				echo 'Không hỗ trợ';
-			}else{
-				echo 'Có';
-			}
-			?>			
-		</li>
+	<ul class= "sanpham_detail">	
+			<li>Bảo hành: <?php echo number_format($abc['Guarantee']). ' tháng' ?></li>
+	    	<li>Wireless: <?php 
+					if($abc['Wireless'] == false){
+						echo 'Không hỗ trợ';
+					}else{
+						echo 'Có';
+					}
+					?>			
+			</li>
 		<li>Kiểu tai nghe: <?php 
 			if($abc['Type'] == null){
 				echo 'Thông thường ';
