@@ -34,8 +34,8 @@
                     include("main_pages/content/WareHouse/product.php");
                 }elseif($tmp == 'findtool'){
                     include("main_pages/find.php");
-                }elseif($tmp = 'findorder'){
-                    include("main_pages/content/Export/order_detail.php");
+                }elseif($tmp = 'Status'){
+                    include("main_pages/status.php");
                 }
             ?>
             </div>
