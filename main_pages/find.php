@@ -4,10 +4,10 @@
 		$array = explode(' ', $tukhoa);
 		$tmp = implode(":*<->", $array);
 	} 
-    $postgres_prod_find_lap = pg_query($cn,'SELECT "ID", "Name", "Price" FROM "Laptop" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
-    $postgres_prod_find_head = pg_query($cn,'SELECT "ID", "Name", "Price" FROM "HeadPhone" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
-    $postgres_prod_find_key = pg_query($cn,'SELECT "ID", "Name", "Price" FROM "KeyBoard" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
-    $postgres_prod_find_mouse = pg_query($cn,'SELECT "ID", "Name", "Price" FROM "Mouse" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
+    $postgres_prod_find_lap = pg_query($cn,'SELECT "ID", "Name", "Price" , "Status" FROM "Laptop" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
+    $postgres_prod_find_head = pg_query($cn,'SELECT "ID", "Name", "Price", "Status" FROM "HeadPhone" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
+    $postgres_prod_find_key = pg_query($cn,'SELECT "ID", "Name", "Price", "Status" FROM "KeyBoard" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
+    $postgres_prod_find_mouse = pg_query($cn,'SELECT "ID", "Name", "Price", "Status" FROM "Mouse" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
 
 ?>
 <p class ="kq">Kết quả tìm kiếm của '<?php echo $tukhoa?>':</p>
@@ -29,6 +29,9 @@
                         echo number_format($row_prod['Price']) 
                     ?> vnđ
                 </p>
+                <p class = "<?php echo $row_prod['Status']?>">
+                    Tình trạng: <?php echo $row_prod['Status']?>
+                </p>
             </a>
         </li>
     <?php
@@ -48,6 +51,9 @@
                     <?php 
                         echo number_format($row_prod['Price']) 
                     ?> vnđ
+                </p>
+                <p class = "<?php echo $row_prod['Status']?>">
+                    Tình trạng: <?php echo $row_prod['Status']?>
                 </p>
             </a>
         </li>
@@ -69,6 +75,9 @@
                         echo number_format($row_prod['Price']) 
                     ?> vnđ
                 </p>
+                <p class = "<?php echo $row_prod['Status']?>">
+                    Tình trạng: <?php echo $row_prod['Status']?>
+                </p>
             </a>
         </li>
     <?php
@@ -88,6 +97,9 @@
                     <?php 
                         echo number_format($row_prod['Price']) 
                     ?> vnđ
+                </p>
+                <p class = "<?php echo $row_prod['Status']?>">
+                    Tình trạng: <?php echo $row_prod['Status']?>
                 </p>
             </a>
         </li>
