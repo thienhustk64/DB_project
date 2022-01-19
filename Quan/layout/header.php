@@ -8,7 +8,8 @@
 
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
+	<link rel="stylesheet" href="../Quan/Style/style.css">
+	<link rel="stylesheet" href="../Quan/Style/Style/css/all.min.css">
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -58,7 +59,7 @@
 		  ?>
 			<a href="cart.php">
 				<button type="button" class="btn btn-primary">
-					Cart <span class="badge badge-light"><?=$count?></span>
+				<i class="fas fa-shopping-cart" style="font-size:130%"></i> <span class="badge badge-light"><?=$count?></span>
 				</button>
 			</a>
 	  </div>

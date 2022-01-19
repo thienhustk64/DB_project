@@ -7,14 +7,16 @@
     // $id = '\'H1\'';
 	// $product = executeResult('select * from "WareHouse" where "ID_Product" = '.$id, false);
 ?>
-    <h3 style="font-size : 20px;">Tìm kiếm sản phẩm</h3>
-
+    <h3 class="timkiem" style="font-size : 20px;">Tìm kiếm sản phẩm</h3>
+<div class = "index_search">
 <p>
-    <form  method="POST" accept-charset="utf-8">
+    <form  method="POST" accept-charset="utf-8" >
        	<input required="true" class="form-control" type="text" placeholder="Nhập ID" style="width : 30%" id="usr" name="tukhoa"></input>
         <button class="btn btn-success" style="width: 100px; font-size: 14px; color: black"> Search</button>
     </form>
 </p>
+</div>
+
      
     <div class="container-test" style="text-align: center" >
         <div class="row" style="margin-right: 15px; margin-left: 150px;">
@@ -25,7 +27,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
-                        <th width = "60px"></th>
+                        <th width = "180px">Add to cart</th>
 
                 </tr>
                     <tbody>
@@ -59,7 +61,7 @@
                         <td>'.$data[$i]['id_product'].'</td>
                         <td>'.$data[$i]['_name'].'</td>
                         <td>'.number_format($data[$i]['price'], 0, ',', '.').'</td>
-                        <td> <button class="btn btn-success" style="width: 150px; font-size: 20px;" onclick="addToCart(\''.$id.'\',\''.$price.'\',\''.$name.'\') "> Add to cart</button> </td>
+                        <td> <button class="btn btn-success" style="width: 150px; font-size: 20px;" onclick="addToCart(\''.$id.'\',\''.$price.'\',\''.$name.'\') "> <i class="fas fa-cart-plus"></i></button> </td>
                     </tr>';
                 }
                 
