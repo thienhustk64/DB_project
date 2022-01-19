@@ -1,5 +1,5 @@
 <?php  
-    $postgres_prod = pg_query($cn, 'SELECT "ID", "Name", "Price" FROM "Laptop" ORDER BY "Price"');
+    $postgres_prod = pg_query($cn, 'SELECT "ID", "Name", "Price" , "Status" FROM "Laptop" ORDER BY "Price"');
 ?>
 <ul class ="list_prod">
     <?php
@@ -18,6 +18,9 @@
                     <?php 
                         echo number_format($row_prod['Price']) 
                     ?> vnđ
+                </p>
+                <p class = "<?php echo $row_prod['Status']?>">
+                    Tình trạng: <?php echo $row_prod['Status']?>
                 </p>
             </a>
         </li>

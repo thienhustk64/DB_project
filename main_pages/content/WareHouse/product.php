@@ -1,12 +1,18 @@
 <?php  
 	$tmp = $_GET['id'];
 	$tmp2 = $_GET['quanly'];
+	$abc2 = "SELECT * FROM " . "\"WareHouse\"" . " a WHERE a.\"ID_Product\" = '". $tmp . "';";
+	$abc3 = pg_query($cn, $abc2);
+	while($abc4 = pg_fetch_array($abc3)){
+		$abc5 = $abc4['Quantity'];
+	}
 	$query = "SELECT * FROM " . "\""  .  $tmp2  . "\"" . " a WHERE a.\"ID\" = '" . $tmp. "';";
 	$postgres_prod_detail = pg_query($cn,$query);
 ?>
 <div class="prod_top"> 
 	<?php 
 		while($abc = pg_fetch_array($postgres_prod_detail)){
+
 	?>
 	<div class="img_prod">
 		<img width="75%" src="images/<?php echo $tmp2 ?>/<?php  echo $abc['ID']?>.jpg">
@@ -20,6 +26,7 @@
 			<li>Hãng sản xuất: <?php echo $abc['Brand'] ?></li>
 			<li>Xuất xứ: <?php echo $abc['From'] ?></li>
 			<li>Tình trạng: <?php echo $abc['Status'] ?></li>
+			<li>Số lượng: <?php echo number_format($abc5) ?> </li>
 			<li>Giá: <?php echo number_format($abc['Price'],0,','). ' vnđ' ?></li>
 		</ul>
 	</div>

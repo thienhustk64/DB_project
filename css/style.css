@@ -95,7 +95,7 @@ ul.list_prod li{
     float: left;
     margin: 5px ;
     background: #d9d4d4;
-    height: 320px;
+    height: 370px;
 }
 ul.list_prod li:hover{
     border: 1px inset;
@@ -108,8 +108,12 @@ p.price_prod{
     text-align: center;
     font-size: 16px;
     font-weight: bold;
+    height: 0%;
+    width: 100%;
 }
 p.name_prod{
+    height: 11%;
+    width: 100%;
     font-weight: bold;
     font-size: 15px;
     text-align: center;
@@ -167,7 +171,7 @@ input[type="submit"] {
 }
 .prod_review{
     height: auto;
-    width: 36%;
+    width: 70%;
     margin: 0 auto;
     color: #e2d3e3;
 }
@@ -200,4 +204,23 @@ input[type="submit"] {
 }
 .clear{
     clear:both;
+}
+p.kq {
+    color: #e2d3e3;
+}
+p.InStock{
+    height: 0%;
+    width: 100%;
+    float: left;
+    color: blue;
+    text-align: center;
+    font-weight: bold;
+}
+p.OutStock{
+    height: 24%;
+    width: 100%;
+    float: left;
+    color: red;
+    font-weight: bold;
+    text-align: center;
 }

@@ -10,7 +10,7 @@
     $postgres_prod_find_mouse = pg_query($cn,'SELECT "ID", "Name", "Price" FROM "Mouse" WHERE doc_names @@ to_tsquery(\'' . $tmp  . ':*\');');
 
 ?>
-<h3 class ="kq">Kết quả tìm kiếm của <?php echo $tukhoa?>:</h3>
+<p class ="kq">Kết quả tìm kiếm của '<?php echo $tukhoa?>':</p>
 <ul class ="list_prod">
     <?php
         while($row_prod = pg_fetch_array($postgres_prod_find_lap)){
