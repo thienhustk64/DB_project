@@ -81,7 +81,8 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger();
 	
 CREATE OR REPLACE FUNCTION find_by_option_lap(_option character varying)
@@ -126,7 +127,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger();
 	
 CREATE OR REPLACE FUNCTION find_by_option_head(_option character varying)
@@ -171,7 +172,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger();
 	
 CREATE OR REPLACE FUNCTION find_by_option_mouse(_option character varying)
@@ -216,7 +217,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 	ON "KeyBoard" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger();
 	
 CREATE OR REPLACE FUNCTION find_by_option_key(_option character varying)
@@ -314,7 +315,7 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER check_status_wh
+CREATE TRIGGER check_status_wh
 AFTER UPDATE ON "WareHouse" FOR EACH ROW EXECUTE PROCEDURE count_product_wh();
 
 create or replace function insert_import_detail()
@@ -343,7 +344,7 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger check_insert_im
+create trigger check_insert_im
 after insert
 on "Import_detail"
 for each row
@@ -406,7 +407,7 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger check_insert_order
+create trigger check_insert_order
 after insert
 on "Order_detail"
 for each row
@@ -427,25 +428,25 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger check_insert_lt
+create trigger check_insert_lt
 before insert
 on "Laptop"
 for each row
 execute procedure insert_wh();
 
-create or replace trigger check_insert_m
+create trigger check_insert_m
 before insert
 on "Mouse"
 for each row
 execute procedure insert_wh();
 
-create or replace trigger check_insert_hp
+create trigger check_insert_hp
 before insert
 on "HeadPhone"
 for each row
 execute procedure insert_wh();
 
-create or replace trigger check_insert_kb
+create trigger check_insert_kb
 before insert
 on "KeyBoard"
 for each row
@@ -479,7 +480,7 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger check_update_order
+create trigger check_update_order
 after update
 on "Order_detail"
 for each row
@@ -507,7 +508,7 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger check_warehouse_detail
+create trigger check_warehouse_detail
 after update
 on "Order_detail"
 for each row
@@ -587,7 +588,7 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger check_order_update
+create trigger check_order_update
 after update
 on "Order"
 for each row
@@ -611,7 +612,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
 	ON "Laptop" FOR EACH ROW EXECUTE PROCEDURE lap_tsvector_trigger_names();
 	
 --------------------------------------------------	
@@ -633,7 +634,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
 	ON "HeadPhone" FOR EACH ROW EXECUTE PROCEDURE head_tsvector_trigger_names();
 --------------------------------------------------	
 ALTER TABLE "KeyBoard"
@@ -654,7 +655,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
 	ON "KeyBoard" FOR EACH ROW EXECUTE PROCEDURE key_tsvector_trigger_names();
 --------------------------------------------------	
 ALTER TABLE "Mouse"
@@ -675,7 +676,7 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
+CREATE TRIGGER tsvectorupdateonname BEFORE INSERT OR UPDATE
 	ON "Mouse" FOR EACH ROW EXECUTE PROCEDURE mouse_tsvector_trigger_names();
 
 
@@ -734,7 +735,7 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger match_order_detail
+create trigger match_order_detail
 after update
 on "Order"
 for each row
@@ -766,7 +767,7 @@ end;
 $body$
 language plpgsql;
 
-create or replace trigger check_delete_im
+create trigger check_delete_im
 after delete
 on "Import_detail"
 for each row

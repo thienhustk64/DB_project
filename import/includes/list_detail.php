@@ -1,9 +1,9 @@
 <div>
     <table class="table table-bordered table-hover">
         <tr>
-            <th style="width: 20%">ID Consignment</th>
+            <th style="width: 20%; color:white">ID Consignment</th>
             <th style="width: 40%">Date</th>
-            <th style="width: 30%">Total</th>
+            <th style="width: 30%; color:white">Total</th>
             <th style="width: 10%"></th>
         </tr>
 
@@ -14,8 +14,8 @@
                 }else{
                     $id_csm = $_POST['id_csm'];
                 }
-                $cn = pg_connect( "host=localhost port=5432 dbname=test_lab
-                user=postgres password=123456");
+                $cn = pg_connect( "host=ec2-23-23-199-57.compute-1.amazonaws.com port=5432 dbname=d5voph6nh682ao
+   user=xmttvyrbszbnze password=c467c601c9d08db139aacd4bc1e6148efa419eebc6ac5dc377b828673ffb463e");
             
                 $query = 'select * from "Import" where "ID_CSM"=\''.$id_csm.'\';';
                 $result = pg_query( $cn, $query);
@@ -28,9 +28,9 @@
                 for($i = 0; $i < count($data); $i++){
                     $id = $data[$i]['ID_CSM'];
                     echo '<tr>
-                        <td>'.$id.'</td>
+                        <td style="color:white">'.$id.'</td>
                         <td>'.$data[$i]['Day'].'</td>
-                        <td>'.$data[$i]['Quantity'].'</td>
+                        <td style="color:white">'.$data[$i]['Quantity'].'</td>
                         <td> <a href=  "index.php?import=check&delete_idcsm='.$id.'"><button class="btn btn-warning" style="width: 100px; font-size: 20px;">Delete</button></a></td>
                     </tr>';
                 }
@@ -42,9 +42,9 @@
 <div>
     <table class="table table-bordered table-hover">
         <tr>
-            <th style="width: 20%">ID Product</th>
+            <th style="width: 20%; color:white">ID Product</th>
             <th style="width: 40%">Quantity</th>
-            <th style="width: 10%"></th>
+            <th style="width: 10%; color:white"></th>
         </tr>
 
         <tbody>
@@ -56,8 +56,8 @@
                     $id_csm = $_POST['id_csm'];
                 }
                 
-                $cn = pg_connect( "host=localhost port=5432 dbname=test_lab
-                user=postgres password=123456");
+                $cn = pg_connect( "host=ec2-23-23-199-57.compute-1.amazonaws.com port=5432 dbname=d5voph6nh682ao
+   user=xmttvyrbszbnze password=c467c601c9d08db139aacd4bc1e6148efa419eebc6ac5dc377b828673ffb463e");
             
                 $query = 'select * from "Import_detail" where "ID_CSM"=\''.$id_csm.'\';';
                 $result = pg_query( $cn, $query);
@@ -70,7 +70,7 @@
                 for($i = 0; $i < count($data); $i++){
                     $id = $data[$i]['ID_Product'];
                     echo '<tr>
-                        <td>'.$id.'</td>
+                        <td style="color:white">'.$id.'</td>
                         <td>'.$data[$i]['Quantity'].'</td>
                         <td> <a href=  "index.php?import=check&check=detail&delete_idcsm='.$id_csm.'&delete_id='.$id.'"><button class="btn btn-warning" style="width: 100px; font-size: 20px;">Delete</button></a></td>
                     </tr>';

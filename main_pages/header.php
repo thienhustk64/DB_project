@@ -7,9 +7,10 @@
             <ul class ="list_main_menu">
                 <li><a href="index.php?quanly=WareHouse">Trang chủ</a></li>
                 <li><a href="index.php?quanly=WareHouse">Kho hàng</a></li>
-                <li><a href="index.php?quanly=Import">Nhập lô</a></li>
+                <li><a href="../import/">Nhập lô</a></li>
                 <li><a href="Quan/trangchu.php">Xuất kho</a></li>
-                <li><a href="index.php?quanly=Status">Tình trạng sản phẩm</a><li>
+                <li><a href="../add">Thêm sản phẩm</a><li>
+                <li style="margin-left: -10px"><a href="index.php?quanly=Status">Tình trạng sản phẩm</a><li>
             </ul>
             <div class = "box">
                 <div class= "clear"></div>

@@ -30,7 +30,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
     
-    <body>
+    <body class="body_thien">
         <div class="form_container">            
             <?php
                 include "header.php";
@@ -50,7 +50,7 @@
                         }else{
                             $tmp1 = $_GET['add'];
                         }
-                        if( $tmp1 = 'Laptop'){
+                        if( $tmp1 == 'Laptop'){
                             include "content/add_laptop.php";
                         }elseif( $tmp1 == 'HeadPhone'){
                             include "content/add_headphone.php";
@@ -58,6 +58,18 @@
                             include "content/add_keyboard.php";
                         }elseif( $tmp1 == 'Mouse'){
                             include "content/add_mouse.php";
+                        }
+
+                        if( isset( $_GET['insert'])){
+                            if( $tmp1 == 'Laptop'){
+                                include "includes/insert_laptop.php";
+                            }elseif( $tmp1 == 'HeadPhone'){
+                                include "includes/insert_headphone.php";
+                            }elseif( $tmp1 == 'KeyBoard'){
+                                include "includes/insert_keyboard.php";
+                            }elseif( $tmp1 == 'Mouse'){
+                                include "includes/insert_mouse.php";
+                            }
                         }
                     ?>
                 </div>

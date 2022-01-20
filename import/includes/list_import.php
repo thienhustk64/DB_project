@@ -1,8 +1,8 @@
 <table class="table table-bordered table-hover">
     <tr>
-        <th style="width: 20%">ID Consignment</th>
+        <th style="width: 20%; color:white">ID Consignment</th>
         <th style="width: 40%">Date</th>
-        <th style="width: 30%">Total</th>
+        <th style="width: 30%; color:white">Total</th>
         <th style="width: 10%"></th>
     </tr>
 
@@ -24,9 +24,9 @@
             for($i = 0; $i < count($data); $i++){
                 $id = $data[$i]['ID_CSM'];
                 echo '<tr>
-                    <td>'.$id.'</td>
+                    <td style="color:white">'.$id.'</td>
                     <td>'.$data[$i]['Day'].'</td>
-                    <td>'.$data[$i]['Quantity'].'</td>
+                    <td style="color:white">'.$data[$i]['Quantity'].'</td>
                     <td> <a href="index.php?import=check&delete_idcsm='.$id.'"><button class="btn btn-warning" style="width: 100px; font-size: 20px;">Delete</button></a></td>
                 </tr>';
             }

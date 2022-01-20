@@ -4,15 +4,15 @@
                 <form method="post" id="form_detail" action="">
                     <table class="table table-bordered table-hover" style="width:20%">
                         <tr>
-                            <th style="width:50%" >ID</th>
+                            <th style="color:white" style="width:50%" >ID</th>
                             <th style="width:50%"><?php echo $id_CSM?></th>
                         </tr>
                         <tr>
-                            <th style="width:50%">Date</th>
+                            <th style="color:white" style="width:50%">Date</th>
                             <th style="width:50%"><?php echo $date?></th>
                         </tr>
                         <tr>
-                            <th style="width:50%" >Row</th>
+                            <th style="color:white" style="width:50%" >Row</th>
                             <th style="width:50%" id="row" name="n_row">0</th>
                         </tr>
                     </table>
@@ -23,7 +23,7 @@
 
                     <table class="table table-bordered table-hover"  id="table_import" style="width:100%">
                         <tr>
-                            <th style="width:20%">ID</th>
+                            <th style="color:white" style="width:20%">ID</th>
                             <th style="width:80%">Quantity</th>
                         </tr>
                     </table>

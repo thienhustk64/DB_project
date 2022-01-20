@@ -14,7 +14,7 @@
             include("main_pages/header.php");
             include("main_pages/content.php");
             include("main_pages/footer.php");
-         ?>
+        ?>
     </div>
 </body>
 </html>

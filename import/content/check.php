@@ -1,6 +1,6 @@
 <div class="clear"></div>
 <div>
-    <h3 style="font-size : 20px;">Tìm kiếm sản phẩm</h3>
+    <h3 style="font-size : 20px; color:white;">Tìm kiếm sản phẩm</h3>
     <p>
         <form  method="POST" accept-charset="utf-8" action="index.php?import=check&check=detail">
             <input required="true" class="form-control" type="text" placeholder="Nhập ID" style="width : 30%" id="usr" name="id_csm"></input>
