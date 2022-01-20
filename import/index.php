@@ -41,12 +41,14 @@
                         }else{
                             $tmp1 = $_GET['import'];
                         }
+
                         if( $tmp1 == 'create'){
                             include "content/import.php";
                         }
                         if( $tmp1 == 'check'){
                             include "content/check.php";
                         }
+                        
                         if( isset( $_GET['import'])){
                             $tmp = $_GET['import'];
                             if( $tmp == 'detail'){

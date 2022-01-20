@@ -1,7 +1,7 @@
             <!-- Co the them duoc chuc nang xoa -->
             
             <div class="table_detail">
-                <form method="post" id="form_detail" action="">
+                <form method="post" id="form_detail" action="index.php?import=insert&id_csm=<?=$id_CSM?>">
                     <table class="table table-bordered table-hover" style="width:20%">
                         <tr>
                             <th style="color:white" style="width:50%" >ID</th>
