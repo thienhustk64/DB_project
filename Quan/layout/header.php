@@ -1,55 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Products Page</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="robots" content="all,follow">
 
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../Quan/Style/style.css">
-	<link rel="stylesheet" href="../Quan/Style/Style/css/all.min.css">
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-	<style type="text/css">
-		.container .row {
-			min-height: 1000px;
-		}
-	</style>
-</head>
-<body>
-	
-	<!-- header -->
-	<!-- Grey with black text -->
-	<div clas="header_index" style=" position:">
-	
-	<div class="navbar navbar-expand-sm " style="height : 170px ;">
-	<div class="logo1" style="margin-top: 40px; margin-left: 20px" ></div>
-		<div class="container" , style="margin-left:0px">
-	  	<ul class="navbar-nav">
-
-		    <li class="nav-item active">
-		      <a class="nav-link" href="products.php">Home</a>
-		    </li>
-		    <li class="nav-item">
-		      <a class="nav-link" href="index1.php">Xuất kho</a>
-		    </li>
-		    <li class="nav-item">
-		      <a class="nav-link" href="bill.php">Check Order</a>
-		    </li>
-		    <li class="nav-item">
-		      <a class="nav-link" href="history.php">Order History</a>
-		    </li>
-
-		  </ul>
-		  <?php
+<div class="header">
+    <div class ="logo">
+        <a href= "index.php">
+            <img src="../images/logo/logo.jpg">
+        </a>
+    </div>
+            <ul class ="list_main_menu">
+                <li><a href="../index.php?quanly=WareHouse">Trang chủ</a></li>
+                <li><a href="../index.php?quanly=WareHouse">Kho hàng</a></li>
+                <li><a href="../index.php?quanly=Import">Nhập lô</a></li>
+                <li><a href="../Quan/trangchu.php">Xuất kho</a></li>
+                <li><a href="../index.php?quanly=Status">Tình trạng sản phẩm</a><li>
+            </ul>
+            <?php
 		  	$cart = [];
 			if(isset($_COOKIE['cart'])) {
 				$json = $_COOKIE['cart'];
@@ -60,13 +24,11 @@
 				$count += $item['num'];
 			}
 		  ?>
-			<a href="cart.php">
+			<a class = "header_cart" href="cart.php">
 				<button type="button" class="btn btn_cart" style="background-color:#8B008B; margin-right:30px">
 				<i class="fas fa-shopping-cart" style="font-size:130% ; color: white"></i> <span class="badge badge-light"><?=$count?></span>
 				</button>
 			</a>
-	  </div>
-	</div>
-
-	
-	</div>
+    <div class ="clear"></div> 
+</div>
+</body>

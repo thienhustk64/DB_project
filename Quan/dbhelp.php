@@ -6,8 +6,8 @@
 */
 function execute($sql) {
 	//Mo ket noi toi database
-	$cn = pg_connect( "host=localhost port=5432 dbname=Test
-        user=postgres password=13062001");
+	$cn = pg_connect( "host=localhost port=5432 dbname=test_lap
+        user=postgres password=thanh20194677");
 
 	//query
 	pg_query($cn, $sql);
@@ -21,8 +21,8 @@ function execute($sql) {
 */
 function executeResult($sql, $onlyOne = false) {
 	//Mo ket noi toi database
-	$cn = pg_connect( "host=localhost port=5432 dbname=Test
-        user=postgres password=13062001");
+	$cn = pg_connect( "host=localhost port=5432 dbname=test_lap
+        user=postgres password=thanh20194677");
 
 
 	//query

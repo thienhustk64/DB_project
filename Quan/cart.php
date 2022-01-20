@@ -1,7 +1,7 @@
 <?php
 	require_once('dbhelp.php');
 	require_once('help.php');
-	include_once('layout/header.php');
+	include_once('index1.php');
 	if(!empty($_POST)) {
 		$id_search = getPost('id_search');
 		echo $id_search;

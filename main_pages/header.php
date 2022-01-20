@@ -8,7 +8,7 @@
                 <li><a href="index.php?quanly=WareHouse">Trang chủ</a></li>
                 <li><a href="index.php?quanly=WareHouse">Kho hàng</a></li>
                 <li><a href="index.php?quanly=Import">Nhập lô</a></li>
-                <li><a href="index.php?quanly=Export">Xuất kho</a></li>
+                <li><a href="Quan/trangchu.php">Xuất kho</a></li>
                 <li><a href="index.php?quanly=Status">Tình trạng sản phẩm</a><li>
             </ul>
             <div class = "box">

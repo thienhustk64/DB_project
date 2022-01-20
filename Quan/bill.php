@@ -1,5 +1,5 @@
 <?php
-	include_once('layout/header.php');
+	include_once('index1.php');
 	require_once('dbhelp.php');
 
 	if(isset($_GET['done_id'])){
@@ -30,8 +30,8 @@
         </tr>
             <tbody>
 <?php
-        $cn = pg_connect( "host=localhost port=5432 dbname=Test
-        user=postgres password=13062001");
+        $cn = pg_connect( "host=localhost port=5432 dbname=test_lap
+        user=postgres password=thanh20194677");
         if( $cn){
             //echo 'connected';
         }

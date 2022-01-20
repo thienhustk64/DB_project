@@ -1,7 +1,7 @@
 <?php
     require_once('help.php');
     require_once('dbhelp.php');
-	include_once('layout/header.php');
+	include_once('index1.php');
     $id_search = getPost('tukhoa');
     //echo $id_search;
     // $id = '\'H1\'';
@@ -33,8 +33,8 @@
                 </tr>
                     <tbody>
         <?php
-                $cn = pg_connect( "host=localhost port=5432 dbname=Test
-                user=postgres password=13062001");
+                $cn = pg_connect( "host=localhost port=5432 dbname=test_lap
+                user=postgres password=thanh20194677");
                 if( $cn){
                     //echo 'connected';
                 }

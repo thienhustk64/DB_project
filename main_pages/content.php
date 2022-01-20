@@ -26,10 +26,6 @@
                     }elseif($tmp2 == 'Mouse'){
                         include("main_pages/content/WareHouse/Mouse/index.php");
                     }
-                }elseif($tmp == 'Import'){
-                    include("main_pages/content/Import/index.php");
-                }elseif($tmp == 'Export'){
-                    include("Quan/index1.php");
                 }elseif($tmp == 'HeadPhone' || $tmp == 'KeyBoard' ||$tmp == 'Mouse' || $tmp == 'Laptop'){
                     include("main_pages/content/WareHouse/product.php");
                 }elseif($tmp == 'findtool'){
