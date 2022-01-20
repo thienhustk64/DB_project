@@ -70,6 +70,7 @@ ul.list_sidebar{
     margin-top: 71px;
     margin-left: -87px;
     background-image: url(../images/backg/sidebar.jpg);
+    background-size: cover;
     height: 640px;
 }
 ul.list_sidebar li{
