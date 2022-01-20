@@ -16,12 +16,14 @@
 	}
 ?>
 <!-- body -->
-<div class="container-test">
-        <table class="table table-bordered table-hover">
+<div class="container-test" style="text-align: center">
+    <div class="col-md-8">
+        <table class="table table-bordered" style="margin-left:200px; margin-right:10px;background-color: #DCDCDC">
             <tr>
                 <th>STT</th>
                 <th>ID Order</th>
                 <th>Date</th>
+                <th>Total</th>
 				<th width = "60px"></th>
 				<th width = "60px"></th>
 
@@ -47,6 +49,7 @@
                 <td>'.($i+1).'</td>
                 <td>'.$data[$i]['ID_Order'].'</td>
                 <td>'.$data[$i]['Day'].'</td>
+                <td>'.number_format($data[$i]['Total'], 0, ',', '.').'</td>
 				<td> <a href=  "?done_id='.$data[$i]['ID_Order'].'"><button class="btn btn-success" style="width: 100px; font-size: 20px;"> Done</button></a></td>
 				<td> <a href="?cancel_id='.$data[$i]['ID_Order'].'"><button class="btn btn-warning" style="width: 100px; font-size: 20px;"> Cancel</button></a> </td>
             </tr>';
@@ -56,7 +59,7 @@
 
             </tbody>
         </table>
-        
+    </div>
     </div>
 
 

@@ -1,20 +1,94 @@
-/* css_bill
-.container-test{
-    width: 80%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+body{
+    font-family: Helvetica;
+    background: #fff;
+    background-image: url(../Style/Img/backgr.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    
+    
 }
-.btn {
-    background-color: aqua;
-} */
-/* html{
-    background-image: url(https://img5.thuthuatphanmem.vn/uploads/2021/11/08/hinh-nen-gaming-4k-ao-dieu_081509601.jpge/Img/backgr.jpg);
-} */
+.header_index{
+    display: inline-block;
+}
 .index_search{
-    margin-left: 167px;
+    margin-left: 214px;
 }
 .timkiem{
-    margin-left: 167px;
+    margin-left: 214px;
+    color: aliceblue;
+}
+.footer{
+    height: 40px;
+    width: 90%;
+    position: fixed;
+    bottom: 0;
+    background-image: url(../Style/Img/backgr.jpg);
+    
+}
+.footer_cr{
+    text-align: center;
+    font-weight: lighter;
+    font-size: 20px;
+    color: blue;
+}
+.logo1{
+    
+    height: 90px;
+    width: 160px;
+    bottom: 0;
+    background-repeat:no-repeat;
+    background-image: url(../Style/Img/logo.jpg);
+}
+
+ul.navbar-nav li a{
+    color:#de237e ;
+
+}
+ul.navbar-nav li a:hover{
+    color: #fff;
+}
+ul.navbar-nav li:hover{
+    background:#a777c7;
+    border: 0.5px inset;
+    border-radius: 4px;
+}
+.btn_cart :hover{
+    background:#a777c7;
+    border: 0.5px inset;
+    border-radius: 4px;
+}
+.btn.btn_add i:hover{
+    background:#a777c7;
+    border: 0.5px inset;
+    border-radius: 4px;
+}
+.table1{
+    border:1px solid black;
+}
+.th{
+    border:1px solid black;
+}
+.td{
+    border:1px solid black;
+}
+.btn.btn_check{
+    color: #fff;
+    background-color: #8B008B;
+}
+.btn.btn_check a:hover{ 
+    color: black;
+    background-color: #a777c7;
+}
+.giatien{
+    background-color: beige;
+    width: 50%;
+    color:black;
+    border-radius: 4px;
+}
+.giatien_order{
+    background-color: beige;
+    width: 60%;
+    color:black;
+    border-radius: 4px;
 }

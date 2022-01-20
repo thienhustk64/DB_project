@@ -7,8 +7,7 @@
     // $id = '\'H1\'';
 	// $product = executeResult('select * from "WareHouse" where "ID_Product" = '.$id, false);
 ?>
-
-<div class="abc"><h3 class="timkiem" style="font-size : 20px">Tìm kiếm sản phẩm</h3></div>
+<h3 class="timkiem" style="font-size : 20px;">Tìm kiếm sản phẩm</h3>
 <div class = "index_search">
 <p>
     <form  method="POST" accept-charset="utf-8"  >
@@ -22,7 +21,7 @@
     <div class="container-test" style="text-align: center" >
         <div class="row" style="margin-right: 0px; margin-left: 200px;">
 		    <div class="col-md-10" style="text-align: center" >
-                    <table class="table table-bordered table1" , style="margin-bottom: 50px ;background-color: #DCDCDC; background-image: url(../Quan1/Style/Img/table.jpg)">
+                    <table class="table table-bordered table1" , style="margin-bottom: 50px ;background-color: #DCDCDC">
                     <tr>
                         <th style="border-radius:20px">STT</th>
                         <th>ID</th>
@@ -77,19 +76,6 @@
     </div>
 
 
-<script type="text/javascript">
-	function addToCart(id,price, name) {
-		$.post('cookie.php', {
-			'action': 'add',
-			'id': id,
-            'price': price,
-			'num': 1,
-            'name': name
-		},function(data) {
-			location.reload()
-		})
-	}
-</script>  
 
 
 

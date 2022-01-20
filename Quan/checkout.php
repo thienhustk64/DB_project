@@ -30,8 +30,8 @@
 <form method="post">
 <div class="container">
 	<div class="row">
-		<div class="col-md-4">
-			<h3>Order Information</h3>
+		<div class="col-md-4" style="color: white">
+			<h3 class="Infor" style ="background-color: #DCDCDC ; border-radius: 5px; color: black; width: 65%">Order Information</h3>
 			<div class="form-group">
 			  <label for="usr">ID Order:</label>
 			  <input required="true" type="text" class="form-control" id="usr" name="fullname">
@@ -46,8 +46,8 @@
 
 
 		<div class="col-md-8">
-			<h3>Cart</h3>
-			<table class="table table-bordered ">
+			<h3 class="Infor_cart" style ="background-color: #DCDCDC ; border-radius: 5px; color: black; width: 14%">Cart</h3>
+			<table class="table table-bordered "  style ="background-color: #DCDCDC">
 				<thead>
 					<tr>
                     <th>No</th>
@@ -87,11 +87,11 @@
 ?>
 				</tbody>
 			</table>
-			<p style="font-size: 30px; color: red">
-				Total: <?=number_format($total, 0, ',', '.')?>
+			<p class="giatien_order" style="font-size: 30px">
+				Total: <?=number_format($total, 0, ',', '.')?> VND
 			</p>
 
-			<button herf="?Abd" class="btn btn-success" style="width: 100%; font-size: 32px;">Complete</button>
+			<button herf="?Abd" class="btn btn_check" style="width: 30%; font-size: 32px;">Complete</button>
 		</div>
 	</div>
 </div>

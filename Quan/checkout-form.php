@@ -57,7 +57,7 @@ if(!empty($_POST)) {
 
 		$sql = "Insert into \"Order_detail\"(\"ID_Order\",\"ID_Product\",\"Quantity\",\"Status\") values ('$fullname','$idpr','$num','Wait')";
 		execute($sql);
-		$sql ="Update \"Order\" set \"Total\" = '$total' ";
+		$sql ="Update \"Order\" set \"Total\" = '$total' where \"ID_Order\" = '$fullname'";
 		execute($sql);
 	}
 

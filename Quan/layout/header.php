@@ -25,11 +25,16 @@
 	</style>
 </head>
 <body>
+	
 	<!-- header -->
 	<!-- Grey with black text -->
-	<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-	  <div class="container">
+	<div clas="header_index">
+	
+	<div class="navbar navbar-expand-sm " style="height : 170px ; position:">
+	<div class="logo1" style="margin-top: 40px; margin-left: 20px" ></div>
+		<div class="container" , style="margin-left:0px">
 	  	<ul class="navbar-nav">
+
 		    <li class="nav-item active">
 		      <a class="nav-link" href="products.php">Home</a>
 		    </li>
@@ -40,7 +45,7 @@
 		      <a class="nav-link" href="bill.php">Check Order</a>
 		    </li>
 		    <li class="nav-item">
-		      <a class="nav-link" href="#">Contact</a>
+		      <a class="nav-link" href="history.php">Order History</a>
 		    </li>
 		    <li class="nav-item">
 		      <a class="nav-link" href="#">About</a>
@@ -58,9 +63,12 @@
 			}
 		  ?>
 			<a href="cart.php">
-				<button type="button" class="btn btn-primary">
-				<i class="fas fa-shopping-cart" style="font-size:130%"></i> <span class="badge badge-light"><?=$count?></span>
+				<button type="button" class="btn btn_cart" style="background-color:#8B008B; margin-right:30px">
+				<i class="fas fa-shopping-cart" style="font-size:130% ; color: white"></i> <span class="badge badge-light"><?=$count?></span>
 				</button>
 			</a>
 	  </div>
-	</nav>
+	</div>
+
+	
+	</div>

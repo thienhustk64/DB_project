@@ -15,7 +15,7 @@
                 <div class= "clear"></div>
                 <form class="timkiem" action="index.php?quanly=findtool" method="POST" accept-charset="utf-8">
                     <input class="timkiem_txt" type="text" placeholder="Tìm kiếm sản phẩm" name="tukhoa" required></input>
-                    <input class "sbutton" type ="submit" name = "findtool" value ="Tìm">
+                    <input class ="sbutton" type ="submit" name = "findtool" value ="Tìm">
                     </input>
                 </form>
             </div>

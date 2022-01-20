@@ -34,8 +34,8 @@
 <!-- body -->
 <div class="container">
 	<div class="row">
-		<div class="col-md-12">
-			<table class="table table-bordered">
+		<div class="col-md-11">
+			<table class="table table-bordered" style=" background-color: #DCDCDC">
 				<thead>
 					<tr>
 						<th>No</th>
@@ -76,12 +76,12 @@
 ?>
 				</tbody>
 			</table>
-			<p style="font-size: 30px; color: red">
-				Total: <?=number_format($total, 0, ',', '.')?>
+			<p class="giatien" style="font-size: 30px">
+				Total: <?=number_format($total, 0, ',', '.')?> VDN
 			</p>
 
 			<a href="checkout.php">
-				<button  class="btn btn-success" style="width: 100%; font-size: 32px;">Checkout</button>
+				<button  class="btn btn_check" style="width: 20%; font-size: 32px;">Checkout</button>
 			</a>
 		</div>
 	</div>

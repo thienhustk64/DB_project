@@ -3,11 +3,11 @@
 ?>
 <!-- body -->
 <div class="container">
-	<div class="row">
+	<div class="row1">
 		<div style="width : 100% ; height : 100px">
-		<h1 style="text-align: center; color: red">Đặt hàng thành công !!!</h1></div>
+		<a href = "index1.php"><h1 style="text-align: center; color: white">Đặt hàng thành công !!!</h1></a></div>
 		<div>
-		<a href = "index1.php"><h2 style="text-align: center; color: red">---Quay lại trang chủ---</h2></a></div>
+		
 	</div>
 </div>
 <?php

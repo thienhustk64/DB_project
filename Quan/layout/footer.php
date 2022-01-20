@@ -1,6 +1,12 @@
 	<!-- footer -->
-	<footer style="background-color: black; color: white; padding: 15px; margin-top: 420px; ">
-		<h5 style="text-align: center;">Copyright © 2019 All rights reserved</h5>
+	<footer >
+	<div class="clear"></div>
+        <div class="footer">
+            <p class ="footer_cr">
+                © All rights reserved | Template by  TQT
+            </p>
+        </div>
+
 	</footer>
 </body>
 </html>
