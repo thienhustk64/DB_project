@@ -186,12 +186,24 @@ input[type="submit"] {
 }
 .prod_review{
     height: auto;
-    width: 70%;
-    margin: 0 auto;
+    width: 50%;
+    margin-left: 425px;
     color: #de237e;
+    border: 1px solid;
+}
+.prod_review:hover {
+    background: #de237e;
+    color: #fff;
 }
 .prod_detail{
     color: #de237e;
+    border: 1px solid;
+    width: 50%;
+    margin-left: 425px;
+}
+.prod_detail:hover {
+    background: #de237e;
+    color: #fff;
 }
 .img_prod{
     float: left;
