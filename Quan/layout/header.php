@@ -28,9 +28,9 @@
 	
 	<!-- header -->
 	<!-- Grey with black text -->
-	<div clas="header_index">
+	<div clas="header_index" style=" position:">
 	
-	<div class="navbar navbar-expand-sm " style="height : 170px ; position:">
+	<div class="navbar navbar-expand-sm " style="height : 170px ;">
 	<div class="logo1" style="margin-top: 40px; margin-left: 20px" ></div>
 		<div class="container" , style="margin-left:0px">
 	  	<ul class="navbar-nav">
@@ -47,9 +47,7 @@
 		    <li class="nav-item">
 		      <a class="nav-link" href="history.php">Order History</a>
 		    </li>
-		    <li class="nav-item">
-		      <a class="nav-link" href="#">About</a>
-		    </li>
+
 		  </ul>
 		  <?php
 		  	$cart = [];
