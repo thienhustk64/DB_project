@@ -10,7 +10,7 @@
         <li><a href="../import/">Nhập lô</a></li>
         <li><a href="../Quan/trangchu.php">Xuất kho</a></li>
         <li><a href="../add">Thêm sản phẩm</a><li>
-        <li style="margin-left: -10px"><a href="index.php?quanly=Status">Tình trạng sản phẩm</a><li>
+        <li style="margin-left: -10px"><a href="../index.php?quanly=Status">Tình trạng sản phẩm</a><li>
     </ul>
     <p></p>
 </div>

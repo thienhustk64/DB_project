@@ -57,7 +57,6 @@ insert into public."Laptop"("ID","Name","Brand","Price","From","Guarantee","CPU"
 insert into public."Laptop"("ID","Name","Brand","Price","From","Guarantee","CPU","RAM","ROM","VGA","Screen","Status","Keyboard","Audio","LAN","Wireless","Webcam","Gate","OS","Battery","Weight","Size","Color","Security") values('L37','Laptop Gaming HP Omen 16 b0123TX 4Y0W6PA','HP',61990000,'China',12,'Intel Core i7-11800H 2.30 GHz','32GB DDR4 3200MHz','1TB SSD M.2 PCIE','NVIDIA GeForce RTX 3070 8GB GDDR4','16.1" QHD (2560 x 1440) 165 Hz ','OutStock','4-zone RGB',NULL,NULL,'Bluetooth v5.0',True,'USB Type C/HDMI/LAN/3.5mm/Thunderbolt/SD','Windows 10 Home',4,2.3,'36.92 x 24.8 x 2.3 cm','Shadow Black',NULL);
 insert into public."Laptop"("ID","Name","Brand","Price","From","Guarantee","CPU","RAM","ROM","VGA","Screen","Status","Keyboard","Audio","LAN","Wireless","Webcam","Gate","OS","Battery","Weight","Size","Color","Security") values('L38','Laptop Gaming HP VICTUS 16 e0177AX 4R0U9PA','HP',22990000,'China',12,'AMD Ryzen 5-5600H 3.30GHz ','8GB DDR4 3200MHz','512GB SSD M.2 PCIE','NVIDIA GeForce GTX 1650 4GB','16.1" FHD (1920 x 1080) IPS 144Hz','OutStock',NULL,NULL,NULL,'Bluetooth v5.2',True,'USB Type C/HDMI/LAN/3.5mm/Thunderbolt/SD','Windows 10 Home',4,2.46,'37 x 26 x 23.5 cm','Mica Silver',NULL);
 insert into public."Laptop"("ID","Name","Brand","Price","From","Guarantee","CPU","RAM","ROM","VGA","Screen","Status","Keyboard","Audio","LAN","Wireless","Webcam","Gate","OS","Battery","Weight","Size","Color","Security") values('L39','Laptop Gaming HP VICTUS 16 d0197TX 4R0T9PA','HP',36990000,'China',12,'Intel Core i7-11800H 2.30 GHz','16GB DDR4 3200MHz','512GB SSD M.2 PCIE','NVIDIA GeForce RTX 3060 6GB GDDR4','16.1" FHD (1920 x 1080) IPS 144Hz','OutStock',NULL,NULL,NULL,'Bluetooth v5.2',True,'USB Type C/HDMI/LAN/3.5mm/Thunderbolt/SD','Windows 10 Home',4,2.46,'37 x 26 x 2,35 cm','Performance Blue',NULL);
-insert into public."Laptop"("ID","Name","Brand","Price","From","Guarantee","CPU","RAM","ROM","VGA","Screen","Status","Keyboard","Audio","LAN","Wireless","Webcam","Gate","OS","Battery","Weight","Size","Color","Security") values('L40','Laptop Gaming Dell Alienware M15 R6 P109F001BBL','Dell',61990000,'China',12,'Intel Core i7-11800H 2.30 GHz','32GB DDR4 3200MHz','1TB SSD M.2 PCIE ','NVIDIA GeForce RTX 3060 6GB GDDR4','15.6" FHD (1920 x 1080) WVA 165Hz','OutStock','Alienware mSeries 4-Zone AlienFX RGB keyboard',NULL,NULL,'Bluetooth v5.0',True,'USB Type C/HDMI/LAN/3.5mm/Thunderbolt/SD','Windows 10 Home',3,2.69,'356.2 x 272.5 x 19.2 mm','Dark Side of the Moon',NULL);
 
 insert into public."Mouse"("ID","Name","Brand","Price","From","Wireless","Status","DPI","IPS","Color","Size","Weight","Led") values('M1','Logitech G102 Lightsync RGB Black','Logitech',400000,'China','Yes','OutStock',8000,200,'Black','116.6 x 62.15 x 38.2',85,'RGB Lightsync');
 insert into public."Mouse"("ID","Name","Brand","Price","From","Wireless","Status","DPI","IPS","Color","Size","Weight","Led") values('M2','Logitech G402 Hyperion','Logitech',640000,'China','Yes','OutStock',8000,500,'Black','136 x 72 x 41',108,'Logo Blue');
@@ -233,7 +232,7 @@ INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity")
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
 						VALUES ('I3', 'K34', 9);
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
-						VALUES ('I3', 'L40', 13);
+						VALUES ('I3', 'L39', 13);
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
 						VALUES ('I3', 'L30', 8);
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
@@ -251,7 +250,7 @@ INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity")
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
 						VALUES ('I3', 'L5', 10);
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
-						VALUES ('I3', 'L40', 9);
+						VALUES ('I3', 'L39', 9);
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
 						VALUES ('I3', 'M28', 8);
 INSERT INTO public."Import_detail"("ID_CSM", "ID_Product", "Quantity") 
